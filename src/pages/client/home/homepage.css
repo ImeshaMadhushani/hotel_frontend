@@ -21,6 +21,47 @@
     z-index: 10;
 }
 
+/* homepage.css */
+
+.stroke-text {
+  /*   /* Using text-shadow to create a stroke effect */
+    text-shadow:
+        2px 2px 0 rgba(113, 162, 232, 0.7),
+        /* Right shadow */
+        -2px -2px 0 rgba(93, 139, 203, 0.7),
+        /* Left shadow */
+        2px -2px 0 rgba(31, 103, 205, 0.7),
+        /* Top right shadow */
+        -2px 2px 0 rgba(202, 210, 220, 0.7);
+    /* Bottom left shadow */ 
+}
+
+.stroke-text1{
+    text-shadow:
+            2px 2px 0 rgba(0, 0, 0, 0.5),
+            /* Right shadow */
+            -2px -2px 0 rgba(0, 0, 0, 0.5),
+            /* Left shadow */
+            2px -2px 0 rgba(0, 0, 0, 0.5),
+            /* Top right shadow */
+            -2px 2px 0 rgba(0, 0, 0, 0.5);
+        /* Bottom left shadow */
+        
+}
+
+.stroke-text2{
+    text-shadow:
+        2px 2px 0 rgba(70, 39, 225, 0.6),
+        /* Right shadow */
+        -2px -2px 0 rgba(0, 0, 0, 0.6),
+        /* Left shadow */
+        2px -2px 0 rgba(0, 0, 0, 0.6),
+        /* Top right shadow */
+        -2px 2px 0 rgba(0, 0, 0, 0.6);
+    /* Bottom left shadow */
+
+}
+
 /* 
 body{
     margin: 0;
