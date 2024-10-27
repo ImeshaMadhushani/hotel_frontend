@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import "./login.css";
 
 export default function Login() {
@@ -15,7 +16,7 @@ export default function Login() {
                         Login
                     </button>
                     <a href="#" className="text-sm text-gray-500 hover:text-gray-800">Forgot Password?</a>
-                    <p className="text-xs text-gray-500 mt-4">Don't have an account? <a href="#" className="text-blue-600 hover:text-blue-800">Sign Up</a></p>
+                    <p className="text-xs text-gray-500 mt-4">Don't have an account? <Link to="/register" className="text-blue-600 hover:text-blue-800">Sign Up</Link></p>
 
                 
                 </div>

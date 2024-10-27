@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './register.css';
 
 export default function Register() {
@@ -8,25 +9,25 @@ export default function Register() {
                 <form>
                     <input 
                         type="text" 
-                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500" 
+                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         placeholder="Enter your Name" 
                         required 
                     />
                     <input 
                         type="email" 
-                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500" 
+                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         placeholder="Enter your Email" 
                         required 
                     />
                     <input 
                         type="password" 
-                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500" 
+                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         placeholder="Create a Password" 
                         required 
                     />
                     <input 
                         type="password" 
-                        className="w-full p-3 mb-6 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500" 
+                        className="w-full p-3 mb-6 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         placeholder="Confirm Password" 
                         required 
                     />
@@ -36,7 +37,7 @@ export default function Register() {
                         Register
                     </button>
                     <p className="text-center text-gray-500 mt-4">
-                        Already have an account? <a href="#" className="text-blue-600">Login</a>
+                        Already have an account? <Link to="/login" className="text-blue-600">Login</Link>
                     </p>
                    {/*  <p className="text-center text-gray-500 mt-4">
                         Or connect with <a href="#" className="text-blue-600">Facebook</a> or <a href="#" className="text-blue-600">Google</a>
