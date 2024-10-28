@@ -6,7 +6,7 @@ export default function Home() {
             <NavBar />
             
             {/* Hero Section */}
-            <div className="relative bg-cover bg-center h-screen" style={{ backgroundImage: 'url(https://via.placeholder.com/1920x1080)' }}>
+            <div className="relative bg-cover bg-center h-screen hero-bg">
                 <div className="flex items-center justify-center h-full bg-black bg-opacity-50">
                     <div className="text-center text-white px-6">
                         <h1 className="text-5xl font-bold mb-4">Welcome to SunShine Villa</h1>
