@@ -1,0 +1,11 @@
+.stroke-text3{
+    text-shadow:
+            2px 2px 0 rgba(141, 180, 239, 0.2),
+            /* Right shadow */
+            -2px -2px 0 rgba(54, 227, 243, 0.911),
+            /* Left shadow */
+            2px -2px 0 #1280ca33,
+            /* Top right shadow */
+            -2px 2px 0 rgba(117, 160, 166, 0.2);
+        /* Bottom left shadow */
+}
