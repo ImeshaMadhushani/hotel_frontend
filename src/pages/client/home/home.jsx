@@ -1,5 +1,6 @@
 import NavBar from "../../../components/navbar/NavBar";
 import './home.css'
+
 export default function Home() {
     return (
         <div className="min-h-screen bg-gray-50">
