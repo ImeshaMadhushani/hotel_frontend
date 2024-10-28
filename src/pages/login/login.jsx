@@ -2,6 +2,11 @@ import { Link } from 'react-router-dom';
 import "./login.css";
 
 export default function Login() {
+
+    function handleLogin() {
+        console.log("Backend URL:",)
+    }
+
     return (
         <>
             <div className="relative flex flex-col items-center justify-center h-screen text-center bg-cover bg-center p-12 overlay1">
@@ -12,7 +17,7 @@ export default function Login() {
                     <input type="text" className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Enter your Email" ></input>
                     <input type="password" className="w-full p-3 mb-6 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Enter your Password" ></input>
                 
-                     <button className="w-full p-3 bg-blue-600 text-white rounded hover:bg-blue-800 transition duration-300">
+                     <button className="w-full p-3 bg-blue-600 text-white rounded hover:bg-blue-800 transition duration-300" onClick={handleLogin}>
                         Login
                     </button>
                     <a href="#" className="text-sm text-gray-500 hover:text-gray-800">Forgot Password?</a>
