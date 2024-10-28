@@ -4,14 +4,37 @@ function NavBar() {
     return (
         <nav className="bg-blue-900 text-white shadow-md p-4">
             <div className="container mx-auto flex justify-between items-center">
-                <div className="text-2xl text-[#0B192C] font-semibold stroke-text3">SunShine Villa</div>
-                <div className="flex space-x-6">
-                    <a href="/" className="hover:text-[#0B192C] transition duration-200">Home</a>
-                    <a href="/about" className="hover:text-[#0B192C] transition duration-200">About</a>
-                    <a href="/contact" className="hover:text-[#0B192C] transition duration-200">Contact</a>
-                    <a href="/login" className="hover:text-[#0B192C] transition duration-200">Login</a>
-                    <a href="/logout" className="hover:text-[#0B192C] transition duration-200">Logout</a>
-                    <a href="/booking" className="bg-blue-500 hover:text-[#0B192C] text-white py-1 px-4 rounded transition duration-200">Book Now</a>
+                {/* Brand name */}
+                <div className="text-2xl font-semibold text-white">SunShine Villa</div>
+                
+                {/* Navigation links and user actions */}
+                <div className="flex items-center space-x-4">
+                    <a href="/" className="text-white hover:text-gray-200 transition duration-200">
+                        Home
+                    </a>
+                    <a href="/about" className="text-white hover:text-gray-200 transition duration-200">
+                        About
+                    </a>
+
+                     <a href="/gallery" className="text-white hover:text-gray-200 transition duration-200">
+                        Gallery
+                    </a>
+
+                    <a href="/contact" className="text-white hover:text-gray-200 transition duration-200">
+                        Contact
+                    </a>
+
+                   {/* Book Now Button */}
+                  {/*   <button className="bg-[#3f71b6] hover:bg-white hover:text-[#0B192C] text-white py-2 px-4 rounded-md shadow-md transition duration-200">
+                        Book Now
+                    </button>
+ */}
+                    {/* Login Button */}
+                  {/*   <button className="bg-[#3f71b6] hover:bg-white hover:text-[#0B192C] text-white py-2 px-4 rounded-md shadow-md transition duration-200">
+                        Login
+                    </button>
+                     */}
+                    
                 </div>
             </div>
         </nav>
