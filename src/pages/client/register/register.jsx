@@ -1,35 +1,47 @@
-import { Link } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
+import { Link ,useNavigate } from 'react-router-dom';
 import './register.css';
 import { useState } from 'react';
 
 export default function Register() {
-
-    const [name, setName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
-     const [whatsapp, setWhatsapp] = useState('');
+    const [phone, setPhone] = useState(''); // Add phone number state
+    const [whatsapp, setWhatsapp] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-     const [error, setError] = useState(null);
+    const [userType, setUserType] = useState('customer'); 
+    const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const navigate = useNavigate(); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (password !== confirmPassword) { 
             setError('Passwords do not match');
             return;
         }
 
         const userData = {
-            name,
+            firstName,
+            lastName,
             email,
+            phone, // Include phone in userData
             whatsapp,
-            password
+            password,
+            image: "../src/assets/avatar1.png",
+             type: "customer",  // Default type
+        disabled: false,   // Default disabled status
+        emailVerified: false  // Default email verification status
         };
 
+        console.log("User Data:", userData);
+
         try {
-                const backendUrl = import.meta.env.VITE_BACKEND_URL;
-                console.log(backendUrl);
+            const backendUrl = import.meta.env.VITE_BACKEND_URL;
+            console.log(backendUrl);
             const response = await fetch(`${backendUrl}/api/user`, {
                 method: 'POST',
                 headers: {
@@ -39,19 +51,20 @@ export default function Register() {
             });
 
             if (!response.ok) {
+                const errorData = await response.json(); // Parse the JSON response
+    console.error("Error response:", errorData);
                 throw new Error('Registration failed!');
             }
 
             const data = await response.json();
             setSuccess(data.message || 'Registration successful!');
             setError(null); // Clear any previous error
+             navigate('/login');
         } catch (err) {
             setError(err.message);
             setSuccess(null); // Clear any previous success message
         }
     };
-
-
 
     return (
         <div className="flex items-center justify-center h-screen bg-cover bg-center p-12 overlay1">
@@ -61,11 +74,18 @@ export default function Register() {
                     <input 
                         type="text" 
                         className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                        placeholder="Enter your Name" 
-                         value={name} 
-                        onChange={(e) => setName(e.target.value)} 
+                        placeholder="Enter your First Name" 
+                        value={firstName} 
+                        onChange={(e) => setFirstName(e.target.value)} 
                         required 
-                       
+                    />
+                    <input 
+                        type="text" 
+                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        placeholder="Enter your Last Name" 
+                        value={lastName} 
+                        onChange={(e) => setLastName(e.target.value)} 
+                        required 
                     />
                     <input 
                         type="email" 
@@ -75,8 +95,15 @@ export default function Register() {
                         onChange={(e) => setEmail(e.target.value)} 
                         required 
                     />
-
-                     <input 
+                    <input 
+                        type="text" 
+                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        placeholder="Enter your Phone Number" 
+                        value={phone} 
+                        onChange={(e) => setPhone(e.target.value)} 
+                        required 
+                    />
+                    <input 
                         type="text" 
                         className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         placeholder="Enter your Whatsapp Number" 
@@ -85,11 +112,20 @@ export default function Register() {
                         required 
                     />
 
+                    <select 
+                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        value={userType} 
+                        onChange={(e) => setUserType(e.target.value)} 
+                    >
+                        <option value="customer">Customer</option>
+                        <option value="admin">Admin</option>
+                    </select>
+
                     <input 
                         type="password" 
                         className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         placeholder="Create a Password" 
-                          value={password} 
+                        value={password} 
                         onChange={(e) => setPassword(e.target.value)} 
                         required  
                     />
@@ -97,7 +133,7 @@ export default function Register() {
                         type="password" 
                         className="w-full p-3 mb-6 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         placeholder="Confirm Password" 
-                         value={confirmPassword} 
+                        value={confirmPassword} 
                         onChange={(e) => setConfirmPassword(e.target.value)} 
                         required 
                     />
@@ -107,15 +143,12 @@ export default function Register() {
                         Register
                     </button>
 
-                     {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+                    {error && <p className="text-red-500 text-center mt-4">{error}</p>}
                     {success && <p className="text-green-500 text-center mt-4">{success}</p>}
 
                     <p className="text-center text-gray-500 mt-4">
                         Already have an account? <Link to="/login" className="text-blue-600">Login</Link>
                     </p>
-                   {/*  <p className="text-center text-gray-500 mt-4">
-                        Or connect with <a href="#" className="text-blue-600">Facebook</a> or <a href="#" className="text-blue-600">Google</a>
-                    </p> */}
                 </form>
             </div>
         </div>
