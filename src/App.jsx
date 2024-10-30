@@ -7,6 +7,7 @@ import Home from './pages/client/home/home';
 import Logged from './pages/loggedclient/logged';
 import AboutUs from './components/aboutus/AboutUs';
 import ContactUs from './components/ContactUs/ContactUs';
+import Booking from './pages/loggedclient/Booking/Booking';
 
 function App() {
  
@@ -22,6 +23,7 @@ function App() {
           <Route path='/contactus' element={<ContactUs />}></Route>
           <Route path='/home' element={<Home />}></Route>
           <Route path='/logged' element={<Logged />}></Route>
+          <Route path='/booking' element={<Booking />}></Route>
           
 
         </Routes>
