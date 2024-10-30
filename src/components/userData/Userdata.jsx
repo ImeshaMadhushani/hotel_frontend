@@ -1,47 +1,53 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 
 function UserTag(props) {
     const [name, setName] = useState("");
-    const token = localStorage.getItem("token");
-    const navigate = useNavigate();
+    const [userFound,setUserFound] = useState(false)
+   // const navigate = useNavigate();
 
+    const token = localStorage.getItem("token")
+    
     useEffect(() => {
+        const backendUrl = import.meta.env.VITE_BACKEND_URL;
+        console.log("Backend URL:", backendUrl);
 
-         const backendUrl = import.meta.env.VITE_BACKEND_URL;
-        console.log(backendUrl);
+        if (token != null) {
+            console.log(token);
 
-
-        if (token) {
-            console.log("Token:", token); // Check the token value here
-
+            // Token validation request
             axios.post(`${backendUrl}/api/user/login`, {}, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 }
-                
             })
             .then((res) => {
-                setName(`${res.data.user.firstName} ${res.data.user.lastName}`);
-            })
-            .catch((error) => {
+                console.log(res)
+                setName(res.data.user.firstName + "" + res.data.user.lastName);
+                setUserFound(true);
+            }).catch((error) => {
                 console.error("Error fetching user data:", error);
-                navigate('/login');
+                setUserFound(false);
             });
+                
+        } else {
+            setName("")
         }
-    }, [token, navigate]);
+    }, [token, userFound]
+    );
 
     function handleLogout() {
         localStorage.removeItem('token');
-        navigate('/login');
+        setUserFound(false);
     }
 
     return (
         <div className="flex items-center space-x-3">
             <img
                 className="rounded-full w-12 h-12 border-2 border-white shadow-lg"
+                // eslint-disable-next-line react/prop-types
                 src={props.imageLink}
                 alt="User Avatar"
             />
