@@ -1,55 +1,57 @@
-/* eslint-disable react/prop-types */
 import axios from 'axios';
-import { useState , useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function UserTag(props) {
+    const [name, setName] = useState("");
+    const token = localStorage.getItem("token");
+    const navigate = useNavigate();
 
-    const [name, setName] = useState("")
-    const [userFound,setUserFound] = useState(false)
-
-    const token = localStorage.getItem("token")
- 
     useEffect(() => {
-        if (token != null) {
-            console.log(token)
-            axios.post(import.meta.env.VITE_BACKEND_URL+"/api/user/login", {
-            }, {
+
+         const backendUrl = import.meta.env.VITE_BACKEND_URL;
+        console.log(backendUrl);
+
+
+        if (token) {
+            console.log("Token:", token); // Check the token value here
+
+            axios.post(`${backendUrl}/api/user/login`, {}, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 }
-            }
-            ).then((res) => {
-                console.log(res)
-                setName(res.data.user.firstName + "" + res.data.user.lastName);
-                setUserFound(true);
-            }).catch((error) => {
+                
+            })
+            .then((res) => {
+                setName(`${res.data.user.firstName} ${res.data.user.lastName}`);
+            })
+            .catch((error) => {
                 console.error("Error fetching user data:", error);
-                setUserFound(false);
+                navigate('/login');
             });
-        } else {
-            setName("")
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ userFound ]
-    );
+    }, [token, navigate]);
+
+    function handleLogout() {
+        localStorage.removeItem('token');
+        navigate('/login');
+    }
 
     return (
-        <div className="absolute right-0 flex items-center cursor-pointer mr-2 ">
+        <div className="flex items-center space-x-3">
             <img
-                className="rounded-full w-[50px] h-[50px] item-center"
+                className="rounded-full w-12 h-12 border-2 border-white shadow-lg"
                 src={props.imageLink}
+                alt="User Avatar"
             />
-            <span className="text-white ml-[5px] text-[30px]">{name}</span>
-
-        
-       
-            <button onClick={() => {
-                localStorage.removeItem('token');
-                setUserFound(false); 
-            
-                
-            }}>LogOut</button>
+            <span className="text-white font-medium text-lg">{name}</span>
+            <button 
+                onClick={handleLogout} 
+                className="bg-red-500 text-white px-4 py-1 rounded-md hover:bg-red-600 transition duration-300 text-sm font-semibold"
+            >
+                Log Out
+            </button>
         </div>
     );
 }

@@ -5,6 +5,8 @@ import Register from './pages/client/register/register';
 import WelcomePage from './pages/client/welcome/welcomepage';
 import Home from './pages/client/home/home';
 import Logged from './pages/loggedclient/logged';
+import AboutUs from './components/aboutus/AboutUs';
+import ContactUs from './components/ContactUs/ContactUs';
 
 function App() {
  
@@ -16,8 +18,11 @@ function App() {
           <Route path='/*' element={<WelcomePage />}></Route>
           <Route path='/login' element={<Login />}></Route>
           <Route path='/register' element={<Register />}></Route>
+          <Route path='/aboutus' element={<AboutUs />}></Route>
+          <Route path='/contactus' element={<ContactUs />}></Route>
           <Route path='/home' element={<Home />}></Route>
           <Route path='/logged' element={<Logged />}></Route>
+          
 
         </Routes>
       </BrowserRouter> 

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './navBar.css';
 
 function NavBar() {
@@ -9,19 +10,19 @@ function NavBar() {
                 
                 {/* Navigation links and user actions */}
                 <div className="flex items-center space-x-4">
-                    <a href="/" className="text-white hover:text-gray-200 transition duration-200">
-                        Home
-                    </a>
-                    <a href="/about" className="text-white hover:text-gray-200 transition duration-200">
-                        About
-                    </a>
+                    <p className="text-white hover:text-gray-200 transition duration-200">
+                        <Link to='/home'>Home</Link>
+                    </p>
+                    <p className="text-white hover:text-gray-200 transition duration-200">
+                          <Link to='/aboutus'>About</Link>
+                    </p>
 
-                     <a href="/gallery" className="text-white hover:text-gray-200 transition duration-200">
+                     <p className="text-white hover:text-gray-200 transition duration-200">
                         Gallery
-                    </a>
+                    </p>
 
                     <a href="/contact" className="text-white hover:text-gray-200 transition duration-200">
-                        Contact
+                          <Link to='/contactus'>ContactUs</Link>
                     </a>
 
                    {/* Book Now Button */}
