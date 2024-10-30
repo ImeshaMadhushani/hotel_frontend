@@ -1,6 +1,6 @@
-//import './navBar.css';
 
-function NavBar() {
+
+function NavBarLogged() {
     return (
         <nav className="bg-blue-900 text-white shadow-md p-4">
             <div className="container mx-auto flex justify-between items-center">
@@ -24,11 +24,6 @@ function NavBar() {
                         Contact
                     </a>
 
-                   {/* Book Now Button */}
-                  {/*   <button className="bg-[#3f71b6] hover:bg-white hover:text-[#0B192C] text-white py-2 px-4 rounded-md shadow-md transition duration-200">
-                        Book Now
-                    </button>
- */}
                     {/* Login Button */}
                   {/*   <button className="bg-[#3f71b6] hover:bg-white hover:text-[#0B192C] text-white py-2 px-4 rounded-md shadow-md transition duration-200">
                         Login
@@ -41,4 +36,4 @@ function NavBar() {
     );
 }
 
-export default NavBar;
+export default NavBarLogged;
