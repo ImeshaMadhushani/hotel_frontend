@@ -1,17 +1,17 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom'; 
+import { Link } from 'react-router-dom'; 
 import NavBarLogged from "../../components/navbarLogged/NavBarLogged";
 import Slider from "../../components/sliderImage/Slider"; // Assuming you create a Slider component
 
 export default function Logged() {
     // Retrieve the user data from localStorage
     const user = JSON.parse(localStorage.getItem("user"));
-    const navigate = useNavigate();
+   /*  const navigate = useNavigate();
 
     const bookNow = () => {
-        navigate("/booking"); // Adjust the path as needed
-    };
+        navigate("/rooms"); // Adjust the path as needed
+    }; */
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -40,8 +40,8 @@ export default function Logged() {
                 <div className="z-10 mt-4">
                     <button 
                         className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-200 shadow-lg transform hover:scale-105"
-                        onClick={bookNow}
-                    ><Link to='/booking'>
+                       
+                    ><Link to='/rooms'>
                         Book Now</Link>
                     </button>
                 </div>
