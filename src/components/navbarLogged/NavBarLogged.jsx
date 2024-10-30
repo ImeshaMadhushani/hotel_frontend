@@ -1,4 +1,5 @@
-
+import UserTag from '../userData/Userdata';
+import avatar from "/src/assets/avatar1.png";
 
 function NavBarLogged() {
     return (
@@ -9,20 +10,15 @@ function NavBarLogged() {
                 
                 {/* Navigation links and user actions */}
                 <div className="flex items-center space-x-4">
-                    <a href="/" className="text-white hover:text-gray-200 transition duration-200">
-                        Home
-                    </a>
-                    <a href="/about" className="text-white hover:text-gray-200 transition duration-200">
-                        About
-                    </a>
-
-                     <a href="/gallery" className="text-white hover:text-gray-200 transition duration-200">
-                        Gallery
-                    </a>
-
-                    <a href="/contact" className="text-white hover:text-gray-200 transition duration-200">
-                        Contact
-                    </a>
+                   
+                    <p> Home</p>
+                    <p> About</p>
+                    <p> Contact</p>
+                    <p> Gallery</p>
+                    <UserTag imageLink={avatar} name="Madhushani" />
+                    <p> Logout</p>
+                    
+                    
 
                     {/* Login Button */}
                   {/*   <button className="bg-[#3f71b6] hover:bg-white hover:text-[#0B192C] text-white py-2 px-4 rounded-md shadow-md transition duration-200">
