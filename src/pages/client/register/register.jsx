@@ -13,32 +13,75 @@ export default function Register() {
     const [success, setSuccess] = useState(null);
 
     const handleSubmit = async (e) => {
-          e.preventDefault();
+        e.preventDefault();
         
-    }
+        if (password !== confirmPassword) { 
+            setError('Passwords do not match');
+            return;
+        }
+
+        const userData = {
+            name,
+            email,
+            whatsapp,
+            password
+        };
+
+        try {
+                const backendUrl = import.meta.env.VITE_BACKEND_URL;
+                console.log(backendUrl);
+            const response = await fetch(`${backendUrl}/api/user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Registration failed!');
+            }
+
+            const data = await response.json();
+            setSuccess(data.message || 'Registration successful!');
+            setError(null); // Clear any previous error
+        } catch (err) {
+            setError(err.message);
+            setSuccess(null); // Clear any previous success message
+        }
+    };
+
+
 
     return (
         <div className="flex items-center justify-center h-screen bg-cover bg-center p-12 overlay1">
             <div className="w-[400px] bg-white bg-opacity-80 backdrop-blur-md rounded-lg shadow-lg p-6">
                 <h2 className="text-4xl font-bold text-center mb-6 text-[#0B192C]">Register</h2>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <input 
                         type="text" 
                         className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         placeholder="Enter your Name" 
+                         value={name} 
+                        onChange={(e) => setName(e.target.value)} 
                         required 
+                       
                     />
                     <input 
                         type="email" 
                         className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         placeholder="Enter your Email" 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} 
                         required 
                     />
 
                      <input 
-                        type="email" 
+                        type="text" 
                         className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         placeholder="Enter your Whatsapp Number" 
+                        value={whatsapp} 
+                        onChange={(e) => setWhatsapp(e.target.value)} 
                         required 
                     />
 
@@ -46,12 +89,16 @@ export default function Register() {
                         type="password" 
                         className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         placeholder="Create a Password" 
-                        required 
+                          value={password} 
+                        onChange={(e) => setPassword(e.target.value)} 
+                        required  
                     />
                     <input 
                         type="password" 
                         className="w-full p-3 mb-6 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         placeholder="Confirm Password" 
+                         value={confirmPassword} 
+                        onChange={(e) => setConfirmPassword(e.target.value)} 
                         required 
                     />
                     <button 
@@ -59,6 +106,10 @@ export default function Register() {
                         className="w-full p-3 bg-blue-600 text-white rounded hover:bg-blue-800 transition duration-300">
                         Register
                     </button>
+
+                     {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+                    {success && <p className="text-green-500 text-center mt-4">{success}</p>}
+
                     <p className="text-center text-gray-500 mt-4">
                         Already have an account? <Link to="/login" className="text-blue-600">Login</Link>
                     </p>
