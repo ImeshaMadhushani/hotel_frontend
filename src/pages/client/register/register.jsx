@@ -1,7 +1,22 @@
 import { Link } from 'react-router-dom';
 import './register.css';
+import { useState } from 'react';
 
 export default function Register() {
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+     const [whatsapp, setWhatsapp] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
+
+    const handleSubmit = async (e) => {
+          e.preventDefault();
+        
+    }
+
     return (
         <div className="flex items-center justify-center h-screen bg-cover bg-center p-12 overlay1">
             <div className="w-[400px] bg-white bg-opacity-80 backdrop-blur-md rounded-lg shadow-lg p-6">
@@ -19,6 +34,14 @@ export default function Register() {
                         placeholder="Enter your Email" 
                         required 
                     />
+
+                     <input 
+                        type="email" 
+                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        placeholder="Enter your Whatsapp Number" 
+                        required 
+                    />
+
                     <input 
                         type="password" 
                         className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
