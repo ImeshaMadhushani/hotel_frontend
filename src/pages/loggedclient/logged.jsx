@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'; 
 import NavBarLogged from "../../components/navbarLogged/NavBarLogged";
 import Slider from "../../components/sliderImage/Slider"; // Assuming you create a Slider component
+import Footer from '../../components/footer/footer';
 
 export default function Logged() {
     // Retrieve the user data from localStorage
@@ -14,7 +15,8 @@ export default function Logged() {
     }; */
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <>
+        <div className="min-h-screen  bg-gray-50">
             <NavBarLogged user={user} />
 
             {/* Hero Section */}
@@ -46,8 +48,9 @@ export default function Logged() {
                     </button>
                 </div>
             </div>
-
-          
-        </div>
+       
+            </div>
+            <Footer />
+            </>
     );
 }

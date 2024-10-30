@@ -7,6 +7,7 @@ export default function AboutUs() {
   const navigate = useNavigate()
 
   return (
+    <>
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
       <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
         <button 
@@ -41,6 +42,8 @@ export default function AboutUs() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+   
+      </>
   )
 }
