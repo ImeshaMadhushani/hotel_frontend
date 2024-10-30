@@ -16,21 +16,29 @@ function UserTag(props) {
         if (token != null) {
             console.log(token);
 
-            // Token validation request
-            axios.post(`${backendUrl}/api/user/login`, {}, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then((res) => {
-                console.log(res)
-                setName(res.data.user.firstName + "" + res.data.user.lastName);
+             const userData = localStorage.getItem("user");
+            if (userData) {
+                const user = JSON.parse(userData);
+                setName(user.firstName + " " + user.lastName);
                 setUserFound(true);
-            }).catch((error) => {
-                console.error("Error fetching user data:", error);
-                setUserFound(false);
-            });
+            } else {
+
+                // Token validation request
+                axios.post(`${backendUrl}/api/user/login`, {}, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    }
+                })
+                    .then((res) => {
+                        console.log(res)
+                        setName(res.data.user.firstName + "" + res.data.user.lastName);
+                        setUserFound(true);
+                    }).catch((error) => {
+                        console.error("Error fetching user data:", error);
+                        setUserFound(false);
+                    });
+            }
                 
         } else {
             setName("")
@@ -41,6 +49,7 @@ function UserTag(props) {
     function handleLogout() {
         localStorage.removeItem('token');
         setUserFound(false);
+        window.location.href = '/login';
     }
 
     return (
