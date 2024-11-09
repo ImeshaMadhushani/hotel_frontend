@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { Link ,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './register.css';
 import { useState } from 'react';
 
@@ -7,7 +7,7 @@ export default function Register() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState(''); // Add phone number state
+    const [phone, setPhone] = useState(''); 
     const [whatsapp, setWhatsapp] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,13 +28,13 @@ export default function Register() {
             firstName,
             lastName,
             email,
-            phone, // Include phone in userData
+            phone,
             whatsapp,
             password,
             image: "../src/assets/avatar1.png",
-             type: "customer",  // Default type
-        disabled: false,   // Default disabled status
-        emailVerified: false  // Default email verification status
+            type: "customer",
+            disabled: false,
+            emailVerified: false
         };
 
         console.log("User Data:", userData);
@@ -51,29 +51,29 @@ export default function Register() {
             });
 
             if (!response.ok) {
-                const errorData = await response.json(); // Parse the JSON response
-    console.error("Error response:", errorData);
+                const errorData = await response.json();
+                console.error("Error response:", errorData);
                 throw new Error('Registration failed!');
             }
 
             const data = await response.json();
             setSuccess(data.message || 'Registration successful!');
-            setError(null); // Clear any previous error
-             navigate('/login');
+            setError(null);
+            navigate('/login');
         } catch (err) {
             setError(err.message);
-            setSuccess(null); // Clear any previous success message
+            setSuccess(null);
         }
     };
 
     return (
-        <div className="flex items-center justify-center h-screen bg-cover bg-center p-12 overlay1">
-            <div className="w-[400px] bg-white bg-opacity-80 backdrop-blur-md rounded-lg shadow-lg p-6">
-                <h2 className="text-4xl font-bold text-center mb-6 text-[#0B192C]">Register</h2>
+        <div className="overlay1">
+            <div className="form-container">
+                <h2 className="form-header">Register</h2>
                 <form onSubmit={handleSubmit}>
                     <input 
                         type="text" 
-                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        className="input-field" 
                         placeholder="Enter your First Name" 
                         value={firstName} 
                         onChange={(e) => setFirstName(e.target.value)} 
@@ -81,7 +81,7 @@ export default function Register() {
                     />
                     <input 
                         type="text" 
-                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        className="input-field" 
                         placeholder="Enter your Last Name" 
                         value={lastName} 
                         onChange={(e) => setLastName(e.target.value)} 
@@ -89,7 +89,7 @@ export default function Register() {
                     />
                     <input 
                         type="email" 
-                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        className="input-field" 
                         placeholder="Enter your Email" 
                         value={email} 
                         onChange={(e) => setEmail(e.target.value)} 
@@ -97,7 +97,7 @@ export default function Register() {
                     />
                     <input 
                         type="text" 
-                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        className="input-field" 
                         placeholder="Enter your Phone Number" 
                         value={phone} 
                         onChange={(e) => setPhone(e.target.value)} 
@@ -105,7 +105,7 @@ export default function Register() {
                     />
                     <input 
                         type="text" 
-                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        className="input-field" 
                         placeholder="Enter your Whatsapp Number" 
                         value={whatsapp} 
                         onChange={(e) => setWhatsapp(e.target.value)} 
@@ -113,7 +113,7 @@ export default function Register() {
                     />
 
                     <select 
-                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        className="select-field" 
                         value={userType} 
                         onChange={(e) => setUserType(e.target.value)} 
                     >
@@ -123,7 +123,7 @@ export default function Register() {
 
                     <input 
                         type="password" 
-                        className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        className="input-field" 
                         placeholder="Create a Password" 
                         value={password} 
                         onChange={(e) => setPassword(e.target.value)} 
@@ -131,7 +131,7 @@ export default function Register() {
                     />
                     <input 
                         type="password" 
-                        className="w-full p-3 mb-6 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        className="input-field" 
                         placeholder="Confirm Password" 
                         value={confirmPassword} 
                         onChange={(e) => setConfirmPassword(e.target.value)} 
@@ -139,14 +139,14 @@ export default function Register() {
                     />
                     <button 
                         type="submit" 
-                        className="w-full p-3 bg-blue-600 text-white rounded hover:bg-blue-800 transition duration-300">
+                        className="submit-btn">
                         Register
                     </button>
 
-                    {error && <p className="text-red-500 text-center mt-4">{error}</p>}
-                    {success && <p className="text-green-500 text-center mt-4">{success}</p>}
+                    {error && <p className="error-message">{error}</p>}
+                    {success && <p className="success-message">{success}</p>}
 
-                    <p className="text-center text-gray-500 mt-4">
+                    <p className="text-message">
                         Already have an account? <Link to="/login" className="text-blue-600">Login</Link>
                     </p>
                 </form>

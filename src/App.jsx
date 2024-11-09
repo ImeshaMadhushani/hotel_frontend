@@ -8,6 +8,7 @@ import Logged from './pages/loggedclient/logged';
 import AboutUs from './components/aboutus/AboutUs';
 import ContactUs from './components/ContactUs/ContactUs';
 import Rooms from './pages/loggedclient/Rooms/Rooms';
+import AdminPage from './pages/adminpage/adminPage'; // Import the admin page component
 
 function App() {
  
@@ -17,6 +18,7 @@ function App() {
         <Routes path='/*'>
           
           <Route path='/*' element={<WelcomePage />}></Route>
+          <Route path="/admin/*" element={<AdminPage />} />
           <Route path='/login' element={<Login />}></Route>
           <Route path='/register' element={<Register />}></Route>
           <Route path='/aboutus' element={<AboutUs />}></Route>
