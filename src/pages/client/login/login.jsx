@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import "./login.css";
 import { useState } from 'react';
 import axios from 'axios';
+import NavBar from "../../../components/navbar/NavBar";
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -31,6 +32,8 @@ export default function Login() {
     }
 
     return (
+        <>
+        <NavBar />
         <div className="relative flex flex-col items-center justify-center h-screen text-center bg-cover bg-center p-12 overlay1">
             <div className="w-[400px] h-auto bg-white bg-opacity-80 backdrop-blur-md rounded-lg shadow-lg flex flex-col items-center p-6">
                 <h1 className="text-4xl font-bold mb-6 text-[#0B192C]">Login</h1>
@@ -63,6 +66,7 @@ export default function Login() {
                     Do not have an account? <Link to="/register" className="text-blue-600 hover:text-blue-800">Sign Up</Link>
                 </p>
             </div>
-        </div>
+            </div>
+            </>
     );
 }
