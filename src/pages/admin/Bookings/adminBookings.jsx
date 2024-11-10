@@ -6,9 +6,11 @@ function AdminBooking() {
         roomId: '',
         start: '',
         end: '',
+        reason: ''
     });
     const [status, setStatus] = useState({ message: '', type: '' });
     const [bookings, setBookings] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         // Fetch the list of bookings when the component is mounted
@@ -16,17 +18,20 @@ function AdminBooking() {
     }, []);
 
     const fetchBookings = async () => {
+        setLoading(true);
         try {
             const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
-            const response = await fetch(`${backendUrl}/api/bookings`);
+            const response = await fetch(`${backendUrl}/api/booking`);
             const data = await response.json();
             if (response.ok) {
-                setBookings(data.bookings); // Assuming response contains an array of bookings
+                setBookings(data.bookings || []); // Assuming response contains an array of bookings
             } else {
-                setStatus({ message: data.message, type: 'error' });
+                setStatus({ message: data.message || 'Failed to fetch bookings', type: 'error' });
             }
         } catch (error) {
-            setStatus({ message: error.message, type: 'error' });
+            setStatus({ message: error.message || 'An error occurred while fetching bookings', type: 'error' });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -37,9 +42,16 @@ function AdminBooking() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Validating if the roomId, start, and end are provided
+        if (!formData.roomId || !formData.start || !formData.end) {
+            setStatus({ message: 'Please fill all required fields', type: 'error' });
+            return;
+        }
+
+        setLoading(true);
         try {
             const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
-            const response = await fetch(`${backendUrl}/api/bookings`, {
+            const response = await fetch(`${backendUrl}/api/booking`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -51,13 +63,16 @@ function AdminBooking() {
             const data = await response.json();
 
             if (response.ok) {
-                setStatus({ message: data.message, type: 'success' });
+                setStatus({ message: data.message || 'Booking created successfully', type: 'success' });
                 fetchBookings(); // Refresh the booking list after successfully creating a booking
+                setFormData({ roomId: '', start: '', end: '', reason: '' }); // Clear form after successful submit
             } else {
                 throw new Error(data.message || 'Booking creation failed');
             }
         } catch (error) {
-            setStatus({ message: error.message, type: 'error' });
+            setStatus({ message: error.message || 'An error occurred while creating the booking', type: 'error' });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -107,11 +122,25 @@ function AdminBooking() {
                         required
                     />
                 </div>
+                <div className="mb-4">
+                    <label htmlFor="reason" className="block text-sm font-medium text-gray-700">
+                        Reason (Optional)
+                    </label>
+                    <input
+                        type="text"
+                        name="reason"
+                        id="reason"
+                        value={formData.reason}
+                        onChange={handleChange}
+                        className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                    />
+                </div>
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+                    className={`w-full py-2 rounded-md ${loading ? 'bg-gray-400' : 'bg-blue-500'} text-white hover:bg-blue-600`}
+                    disabled={loading}
                 >
-                    Submit Booking
+                    {loading ? 'Submitting...' : 'Submit Booking'}
                 </button>
             </form>
 
@@ -124,30 +153,40 @@ function AdminBooking() {
             {/* Booking Table */}
             <div className="mt-6">
                 <h3 className="text-xl font-semibold">All Bookings</h3>
-                <table className="min-w-full mt-4 table-auto">
-                    <thead>
-                        <tr className="border-b">
-                            <th className="px-4 py-2">Booking ID</th>
-                            <th className="px-4 py-2">Email</th>
-                            <th className="px-4 py-2">Start Date</th>
-                            <th className="px-4 py-2">End Date</th>
-                            <th className="px-4 py-2">Status</th>
-                            <th className="px-4 py-2">Reason</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {bookings.map((booking) => (
-                            <tr key={booking.bookingId} className="border-b">
-                                <td className="px-4 py-2">{booking.bookingId}</td>
-                                <td className="px-4 py-2">{booking.email}</td>
-                                <td className="px-4 py-2">{new Date(booking.start).toLocaleString()}</td>
-                                <td className="px-4 py-2">{new Date(booking.end).toLocaleString()}</td>
-                                <td className="px-4 py-2">{booking.status}</td>
-                                <td className="px-4 py-2">{booking.reason || 'N/A'}</td>
+                {loading ? (
+                    <p>Loading bookings...</p>
+                ) : (
+                    <table className="min-w-full mt-4 table-auto">
+                        <thead>
+                            <tr className="border-b">
+                                <th className="px-4 py-2">Booking ID</th>
+                                <th className="px-4 py-2">Email</th>
+                                <th className="px-4 py-2">Start Date</th>
+                                <th className="px-4 py-2">End Date</th>
+                                <th className="px-4 py-2">Status</th>
+                                <th className="px-4 py-2">Reason</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {bookings.length ? (
+                                bookings.map((booking) => (
+                                    <tr key={booking.bookingId} className="border-b">
+                                        <td className="px-4 py-2">{booking.bookingId}</td>
+                                        <td className="px-4 py-2">{booking.email}</td>
+                                        <td className="px-4 py-2">{new Date(booking.start).toLocaleString()}</td>
+                                        <td className="px-4 py-2">{new Date(booking.end).toLocaleString()}</td>
+                                        <td className="px-4 py-2">{booking.status}</td>
+                                        <td className="px-4 py-2">{booking.reason || 'N/A'}</td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="6" className="px-4 py-2 text-center">No bookings available</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                )}
             </div>
         </div>
     );
