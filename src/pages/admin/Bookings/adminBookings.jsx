@@ -4,27 +4,29 @@ import React, { useState, useEffect } from 'react';
 function AdminBooking() {
     const [formData, setFormData] = useState({
         roomId: '',
+        email: '',
         start: '',
         end: '',
-        reason: ''
+        reason: '',
+        status: 'Available', // Default status
+        bookingId: null, // Store the booking ID for editing
     });
     const [status, setStatus] = useState({ message: '', type: '' });
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        // Fetch the list of bookings when the component is mounted
         fetchBookings();
     }, []);
 
     const fetchBookings = async () => {
         setLoading(true);
         try {
-            const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+            const backendUrl = import.meta.env.VITE_BACKEND_URL;
             const response = await fetch(`${backendUrl}/api/booking`);
             const data = await response.json();
             if (response.ok) {
-                setBookings(data.bookings || []); // Assuming response contains an array of bookings
+                setBookings(data.bookings || []);
             } else {
                 setStatus({ message: data.message || 'Failed to fetch bookings', type: 'error' });
             }
@@ -42,154 +44,258 @@ function AdminBooking() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validating if the roomId, start, and end are provided
-        if (!formData.roomId || !formData.start || !formData.end) {
+        if (!formData.roomId || !formData.email || !formData.start || !formData.end || !formData.status) {
             setStatus({ message: 'Please fill all required fields', type: 'error' });
             return;
         }
 
         setLoading(true);
+        const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+        const method = formData.bookingId ? 'PUT' : 'POST'; // Determine whether it's a new booking or editing an existing one
+        const url = formData.bookingId
+            ? `${backendUrl}/api/booking/${formData.bookingId}` // Edit existing booking
+            : `${backendUrl}/api/booking`; // Create new booking
+
         try {
-            const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
-            const response = await fetch(`${backendUrl}/api/booking`, {
-                method: 'POST',
+            const token = localStorage.getItem('token');
+            if (!token) {
+            throw new Error('Authentication token is missing. Please log in again.');
+        }
+            const response = await fetch(url, {
+                method: method,
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(formData),
-                credentials: 'include'  // for including cookies if session-based auth is used
+                credentials: 'include',
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                setStatus({ message: data.message || 'Booking created successfully', type: 'success' });
-                fetchBookings(); // Refresh the booking list after successfully creating a booking
-                setFormData({ roomId: '', start: '', end: '', reason: '' }); // Clear form after successful submit
+                setStatus({ message: data.message || (formData.bookingId ? 'Booking updated successfully' : 'Booking created successfully'), type: 'success' });
+                fetchBookings();
+                setFormData({ roomId: '', start: '', end: '', reason: '', status: 'Available', bookingId: null }); // Reset form
             } else {
-                throw new Error(data.message || 'Booking creation failed');
+                throw new Error(data.message || 'Booking creation/update failed');
             }
         } catch (error) {
-            setStatus({ message: error.message || 'An error occurred while creating the booking', type: 'error' });
+            setStatus({ message: error.message || 'An error occurred while processing the booking', type: 'error' });
         } finally {
             setLoading(false);
         }
     };
 
+    const handleDelete = async (bookingId) => {
+        setLoading(true);
+        try {
+            const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+              const token = localStorage.getItem('token');
+            const response = await fetch(`${backendUrl}/api/booking/${bookingId}`, {
+                method: 'DELETE',
+                 headers: {
+                'Authorization': `Bearer ${token}`, // Include token
+                'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                setStatus({ message: data.message || 'Booking deleted successfully', type: 'success' });
+                fetchBookings();
+            } else {
+                throw new Error(data.message || 'Booking deletion failed');
+            }
+        } catch (error) {
+            setStatus({ message: error.message || 'An error occurred while deleting the booking', type: 'error' });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleEdit = (booking) => {
+        setFormData({
+            bookingId: booking._id, // Set booking ID for editing
+            roomId: booking.roomId,
+            email:booking.email,
+            start: booking.start,
+            end: booking.end,
+            reason: booking.reason || '',
+            status: booking.status || 'Available',
+        });
+    };
+
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md mt-8">
-            <h2 className="text-2xl font-bold mb-6">Create Booking</h2>
-            <form onSubmit={handleSubmit} className="mb-6">
-                <div className="mb-4">
-                    <label htmlFor="roomId" className="block text-sm font-medium text-gray-700">
-                        Room ID
-                    </label>
-                    <input
-                        type="number"
-                        name="roomId"
-                        id="roomId"
-                        value={formData.roomId}
-                        onChange={handleChange}
-                        className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="start" className="block text-sm font-medium text-gray-700">
-                        Start Date
-                    </label>
-                    <input
-                        type="datetime-local"
-                        name="start"
-                        id="start"
-                        value={formData.start}
-                        onChange={handleChange}
-                        className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="end" className="block text-sm font-medium text-gray-700">
-                        End Date
-                    </label>
-                    <input
-                        type="datetime-local"
-                        name="end"
-                        id="end"
-                        value={formData.end}
-                        onChange={handleChange}
-                        className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="reason" className="block text-sm font-medium text-gray-700">
-                        Reason (Optional)
-                    </label>
-                    <input
-                        type="text"
-                        name="reason"
-                        id="reason"
-                        value={formData.reason}
-                        onChange={handleChange}
-                        className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-                    />
-                </div>
-                <button
-                    type="submit"
-                    className={`w-full py-2 rounded-md ${loading ? 'bg-gray-400' : 'bg-blue-500'} text-white hover:bg-blue-600`}
-                    disabled={loading}
-                >
-                    {loading ? 'Submitting...' : 'Submit Booking'}
-                </button>
-            </form>
+    <div className="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold text-gray-800 text-center mb-8">
+        Manage Bookings
+      </h2>
 
-            {status.message && (
-                <p className={`mt-4 text-center ${status.type === 'success' ? 'text-green-600' : 'text-red-600'}`}>
-                    {status.message}
-                </p>
-            )}
-
-            {/* Booking Table */}
-            <div className="mt-6">
-                <h3 className="text-xl font-semibold">All Bookings</h3>
-                {loading ? (
-                    <p>Loading bookings...</p>
-                ) : (
-                    <table className="min-w-full mt-4 table-auto">
-                        <thead>
-                            <tr className="border-b">
-                                <th className="px-4 py-2">Booking ID</th>
-                                <th className="px-4 py-2">Email</th>
-                                <th className="px-4 py-2">Start Date</th>
-                                <th className="px-4 py-2">End Date</th>
-                                <th className="px-4 py-2">Status</th>
-                                <th className="px-4 py-2">Reason</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {bookings.length ? (
-                                bookings.map((booking) => (
-                                    <tr key={booking.bookingId} className="border-b">
-                                        <td className="px-4 py-2">{booking.bookingId}</td>
-                                        <td className="px-4 py-2">{booking.email}</td>
-                                        <td className="px-4 py-2">{new Date(booking.start).toLocaleString()}</td>
-                                        <td className="px-4 py-2">{new Date(booking.end).toLocaleString()}</td>
-                                        <td className="px-4 py-2">{booking.status}</td>
-                                        <td className="px-4 py-2">{booking.reason || 'N/A'}</td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="6" className="px-4 py-2 text-center">No bookings available</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                )}
-            </div>
+      {/* Form */}
+      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="roomId" className="block text-gray-700 font-medium">
+              Room ID
+            </label>
+            <input
+              type="number"
+              name="roomId"
+              id="roomId"
+              value={formData.roomId}
+              onChange={handleChange}
+              className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="block text-gray-700 font-medium">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
         </div>
-    );
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="start" className="block text-gray-700 font-medium">
+              Start Date
+            </label>
+            <input
+              type="datetime-local"
+              name="start"
+              id="start"
+              value={formData.start}
+              onChange={handleChange}
+              className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="end" className="block text-gray-700 font-medium">
+              End Date
+            </label>
+            <input
+              type="datetime-local"
+              name="end"
+              id="end"
+              value={formData.end}
+              onChange={handleChange}
+              className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="reason" className="block text-gray-700 font-medium">
+            Reason (Optional)
+          </label>
+          <input
+            type="text"
+            name="reason"
+            id="reason"
+            value={formData.reason}
+            onChange={handleChange}
+            className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="status" className="block text-gray-700 font-medium">
+            Status
+          </label>
+          <select
+            name="status"
+            id="status"
+            value={formData.status}
+            onChange={handleChange}
+            className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="Available">Available</option>
+            <option value="Pending">Pending</option>
+            <option value="Booked">Booked</option>
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          className={`w-full py-3 text-white rounded-lg ${
+            loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
+          }`}
+          disabled={loading}
+        >
+          {loading ? "Processing..." : formData.bookingId ? "Update Booking" : "Submit Booking"}
+        </button>
+      </form>
+
+      {/* Status Message */}
+      {status.message && (
+        <div
+          className={`mt-6 p-4 text-center rounded-lg ${
+            status.type === "success" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+          }`}
+        >
+          {status.message}
+        </div>
+      )}
+
+      {/* Bookings Table */}
+      <div className="mt-8 bg-white p-6 rounded-lg shadow-lg">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">All Bookings</h3>
+        {loading ? (
+          <div className="text-center">Loading...</div>
+        ) : (
+          <table className="min-w-full table-auto border-collapse border border-gray-200">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border border-gray-200 px-4 py-2 text-left text-gray-600">Room ID</th>
+                <th className="border border-gray-200 px-4 py-2 text-left text-gray-600">Start</th>
+                <th className="border border-gray-200 px-4 py-2 text-left text-gray-600">End</th>
+                <th className="border border-gray-200 px-4 py-2 text-left text-gray-600">Status</th>
+                <th className="border border-gray-200 px-4 py-2 text-left text-gray-600">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookings.map((booking) => (
+                <tr key={booking._id} className="hover:bg-gray-50">
+                  <td className="border border-gray-200 px-4 py-2">{booking.roomId}</td>
+                  <td className="border border-gray-200 px-4 py-2">{new Date(booking.start).toLocaleString()}</td>
+                  <td className="border border-gray-200 px-4 py-2">{new Date(booking.end).toLocaleString()}</td>
+                  <td className="border border-gray-200 px-4 py-2">{booking.status}</td>
+                  <td className="border border-gray-200 px-4 py-2 flex space-x-2">
+                    <button
+                      className="text-blue-600 hover:underline"
+                      onClick={() => handleEdit(booking)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="text-red-600 hover:underline"
+                      onClick={() => handleDelete(booking._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
 }
+
 
 export default AdminBooking;
