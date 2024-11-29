@@ -1,60 +1,108 @@
-import { useNavigate } from "react-router-dom";
-import heroImage from "/hero1.jpg"; // Adjust the path based on your file structure
+// eslint-disable-next-line no-unused-vars
+import React, { useState } from 'react';
+//import { useNavigate } from "react-router-dom";
+//import heroImage from "/hero1.jpg"; // Adjust the path based on your file structure
 
 export default function ContactUs() {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Here you would typically handle form submission
+    // For example, send data to a backend service
+    console.log('Form submitted:', formData);
+    
+    // Optional: Reset form after submission
+    setFormData({
+      name: '',
+      email: '',
+      message: ''
+    });
+
+    // Optional: Show a success message or redirect
+    // navigate('/thank-you');
+  };
 
   return (
-    <div
-      className="relative min-h-screen bg-cover bg-center bg-fixed flex items-center"
-      style={{ backgroundImage: `url(${heroImage})` }}
-    >
-      {/* Darker overlay for a cohesive look */}
-      <div className="absolute inset-0 bg-black opacity-70"></div>
-
-      <div className="relative z-10 container mx-auto px-4 py-20 sm:px-6 lg:px-8 max-w-3xl">
-        <button
-          onClick={() => navigate(-1)}
-          className="mb-8 inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-        >
-          Back
-        </button>
-
-        <div className="max-w-4xl mx-auto text-center bg-white bg-opacity-90 shadow-2xl rounded-lg overflow-hidden backdrop-blur-md p-8">
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-blue-900 mb-6">
-            Contact Us
-          </h2>
-          <p className="text-lg mb-8 text-gray-800">
-            We would love to hear from you!
-          </p>
-
-          <form className="mt-8">
+    <div 
+      className="relative min-h-screen bg-cover bg-center bg-fixed flex items-center" 
+      /* style={{ backgroundImage: `url(${heroImage})` }}
+   */ > 
+      {/* Dark overlay for emphasis */}
+      <div className="absolute inset-0 "></div>
+      
+      {/* Contact Us Card */}
+      <div className="relative z-10 w-full max-w-md mx-auto text-center bg-white bg-opacity-95 shadow-2xl rounded-lg overflow-hidden p-10 backdrop-blur-lg">
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-blue-900 mb-6">
+          Contact Us
+        </h2>
+        <p className="text-lg text-gray-600 mb-8">
+          We value your feedback and inquiries. Reach out to us anytime!
+        </p>
+        
+        <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+          {/* Name Field */}
+          <div>
             <input
               type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
               placeholder="Your Name"
-              className="border border-gray-300 p-3 mb-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition duration-200"
               required
             />
+          </div>
+          
+          {/* Email Field */}
+          <div>
             <input
               type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               placeholder="Your Email"
-              className="border border-gray-300 p-3 mb-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition duration-200"
               required
             />
+          </div>
+          
+          {/* Message Field */}
+          <div>
             <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
               placeholder="Your Message"
-              className="border border-gray-300 p-3 mb-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-              rows="4"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition duration-200"
+              rows="5"
               required
-            />
+            ></textarea>
+          </div>
+          
+          {/* Submit Button */}
+          <div>
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
+              className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               Send Message
             </button>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   );

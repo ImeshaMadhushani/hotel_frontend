@@ -6,85 +6,12 @@ body {
     overflow: auto;
 }
 
-/* Background styling for the hero section */
+/* Hero section background */
 .hero-bg {
     background-image: url('/hero2.jpg');
     background-size: cover;
     background-position: center;
-    /* background-attachment: fixed; */
 }
-
-/* Styling for the booking form */
-.booking-form {
-    position: absolute;
-    top: 35%;
-    /* Adjust this percentage to place the form lower */
-    width: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(255, 255, 255, 0.8);
-    /* Slight transparency */
-    padding: 2rem 3rem;
-    border-radius: 50px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-}
-/* Input fields and dropdowns */
-.booking-form input,
-.booking-form select {
-    width: 150px;
-    /* Compact width */
-    padding: 0.5rem;
-    /* Comfortable padding */
-    border-radius: 6px;
-    /* Slightly rounded corners */
-    text-align: center;
-    border: 1px solid #d1d5db;
-    /* Light gray border */
-}
-
-/* Labels */
-.booking-form label {
-    font-size: 0.85rem;
-    /* Smaller text for compact look */
-    font-weight: 500;
-    /* Medium weight for clarity */
-}
-
-/* Book Now button */
-.booking-form button {
-    
-    /* Purple gradient */
-    color: #fff;
-    font-weight: bold;
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    /* Fully rounded button */
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
-    /* Button shadow */
-    transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.booking-form button:hover {
-    transform: translateY(-3px);
-
-}
-
-/* Button hover effect */
-button {
-    transition: all 0.3s ease;
-}
-
-button:hover {
-    transform: translateY(-2px);
-}
-
-/* Styling for text shadow */
-.text-shadow {
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
-}
-
-
 
 /* Fade-in animation */
 .animate-fade-in {
@@ -101,4 +28,33 @@ button:hover {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Slider Animation */
+@keyframes slide {
+    0% { transform: translateX(0); }
+    33% { transform: translateX(-100%); }
+    66% { transform: translateX(-200%); }
+    100% { transform: translateX(0); }
+}
+
+/* For the sliding images */
+.animate-slide {
+    animation: slide 15s infinite linear;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 2s ease-in-out;
 }
