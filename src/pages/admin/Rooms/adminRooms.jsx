@@ -37,6 +37,11 @@ const AdminRooms = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+  setFormData({ ...formData, photos: e.target.files[0] });
+};
+
+
   // Submit form for creating or updating room
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -174,10 +179,10 @@ const AdminRooms = () => {
             required
           />
           <input
-            type="text"
+            type="file"
             name="photos"
             value={formData.photos}
-            onChange={handleChange}
+            onChange={handleFileChange}
             placeholder="Photos (comma-separated URLs)"
             className="p-3 rounded border border-gray-300 text-black focus:ring-2 focus:ring-blue-500"
           />

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useSpring, animated } from "react-spring";
 import "./GalleryP.css";
 import Footer from "../footer/footer";
-import NavBar from "../navbar/NavBar";
+//import NavBar from "../navbar/NavBar";
 
 const GalleryP = () => {
   const images = [
@@ -32,7 +32,7 @@ const GalleryP = () => {
 
     return (
         <>
-            <NavBar/>
+           {/*  <NavBar/> */}
     <div className="gallery-container">
       <div className="gallery-header">
         <h1>Gallery</h1>

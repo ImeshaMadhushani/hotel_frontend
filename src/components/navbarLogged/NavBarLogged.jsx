@@ -16,7 +16,7 @@ function NavBarLogged() {
                     <p className="hover:text-gray-300 cursor-pointer transition-colors duration-300"><Link to="/logged">Home</Link></p>
                     <p className="hover:text-gray-300 cursor-pointer transition-colors duration-300"><Link to="/aboutus">About</Link></p>
                     <p className="hover:text-gray-300 cursor-pointer transition-colors duration-300"><Link to="/contactus">Contact</Link></p>
-                    <p className="hover:text-gray-300 cursor-pointer transition-colors duration-300">Gallery</p>
+                    <p className="hover:text-gray-300 cursor-pointer transition-colors duration-300"><Link to="/galleryp">Gallery</Link></p>
                     <UserTag imageLink={avatar} name="Madhushani" />
                 </div>
             </div>

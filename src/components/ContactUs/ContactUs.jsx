@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-import NavBar from "../navbar/NavBar";
-import Footer from "../footer/Footer";
+//import NavBar from "../navbar/NavBar";
+import Footer from "../footer/footer";
 export default function ContactUs() {
   const [formData, setFormData] = useState({
     name: '',
@@ -31,7 +31,7 @@ export default function ContactUs() {
 
   return (
     <>
-      <NavBar/>
+      {/* <NavBar/> */}
     <div className="relative min-h-screen bg-cover bg-center bg-fixed flex items-center"
       style={{ backgroundImage: `url('/hero1.jpg')` }} >
       

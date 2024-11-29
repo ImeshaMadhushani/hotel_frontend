@@ -11,6 +11,7 @@ import Rooms from './pages/loggedclient/Rooms/Rooms';
 import AdminPage from './pages/adminpage/adminPage'; // Import the admin page component
 import Services from './components/services/Services';
 import GalleryP from './components/mainGallery/GalleryP';
+import Booking from './pages/loggedclient/booking/booking';
 function App() {
  
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path='/home' element={<Home />}></Route>
           <Route path='/logged' element={<Logged />}></Route>
           <Route path='/rooms' element={<Rooms />}></Route>
+          <Route path='/booking/:roomId' element={<Booking />}></Route>
           <Route path='/services' element={<Services />}></Route>
           <Route path='/galleryp' element={<GalleryP />}></Route>
           
