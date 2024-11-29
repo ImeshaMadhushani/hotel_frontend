@@ -1,3 +1,45 @@
-.hero-bg{
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+
+body {
+    overflow-y: scroll;
+    /* Ensures the vertical scroll works */
+}
+
+.hero-bg {
     background-image: url('/hero2.jpg');
-} 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    /* Creates a parallax effect */
+}
+
+.animate-fade-in {
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.booking-form {
+    border: 1px solid #e5e7eb;
+}
+
+button {
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}

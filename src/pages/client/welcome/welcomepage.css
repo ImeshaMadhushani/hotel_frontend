@@ -13,8 +13,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.3);
-    /* Adjust opacity as needed */
+    background-color: rgba(0, 0, 0, 0.3); /* Dark overlay */
     z-index: 0;
 }
 
@@ -23,63 +22,88 @@
     z-index: 10;
 }
 
-/* homepage.css */
-
+/* Styling for text shadows */
 .stroke-text {
-  
     text-shadow:
         2px 2px 0 rgba(113, 162, 232, 0.7),
-        /* Right shadow */
         -2px -2px 0 rgba(93, 139, 203, 0.7),
-        /* Left shadow */
         2px -2px 0 rgba(31, 103, 205, 0.7),
-        /* Top right shadow */
         -2px 2px 0 rgba(202, 210, 220, 0.7);
-    /* Bottom left shadow */ 
 }
 
-.stroke-text1{
+.stroke-text1 {
     text-shadow:
-            2px 2px 0 rgba(0, 0, 0, 0.5),
-            /* Right shadow */
-            -2px -2px 0 rgba(0, 0, 0, 0.5),
-            /* Left shadow */
-            2px -2px 0 rgba(0, 0, 0, 0.5),
-            /* Top right shadow */
-            -2px 2px 0 rgba(0, 0, 0, 0.5);
-        /* Bottom left shadow */
-        
+        2px 2px 0 rgba(0, 0, 0, 0.5),
+        -2px -2px 0 rgba(0, 0, 0, 0.5),
+        2px -2px 0 rgba(0, 0, 0, 0.5),
+        -2px 2px 0 rgba(0, 0, 0, 0.5);
 }
 
-.stroke-text2{
+.stroke-text2 {
     text-shadow:
         2px 2px 0 rgba(70, 39, 225, 0.6),
-        /* Right shadow */
         -2px -2px 0 rgba(0, 0, 0, 0.6),
-        /* Left shadow */
         2px -2px 0 rgba(0, 0, 0, 0.6),
-        /* Top right shadow */
         -2px 2px 0 rgba(0, 0, 0, 0.6);
-    /* Bottom left shadow */
-
 }
 
-/* 
-body{
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-     background-image: url('./home-bg.jpg');
-    background-size: cover;
-    background-position: center; 
-    padding: 50px;
-    text-align: center;
-    background-repeat: no-repeat;
-    max-height: 100vh;
+/* Buttons container for better spacing */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Adds space between buttons */
 }
 
- */
+/* Buttons styling */
+button {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+button:hover {
+    transform: scale(1.05); /* Scale effect on hover */
+}
+
+button a {
+    color: white;
+    text-decoration: none;
+}
 
 button:hover {
     transform: scale(1.05);
 }
+
+/* Additional responsive adjustments */
+@media (max-width: 768px) {
+    .text-6xl {
+        font-size: 3rem;
+    }
+
+    .text-4xl {
+        font-size: 2.5rem;
+    }
+
+    .mt-10 {
+        margin-top: 20px;
+    }
+
+    .button-container {
+        gap: 15px;
+    }
+}
+
+.booking-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.login-page {
+    font-family: "Arial", sans-serif;
+}
+
+.login-container {
+    max-width: 400px;
+}
+
