@@ -10,6 +10,7 @@ import ContactUs from './components/ContactUs/ContactUs';
 import Rooms from './pages/loggedclient/Rooms/Rooms';
 import AdminPage from './pages/adminpage/adminPage'; // Import the admin page component
 import Services from './components/services/Services';
+import GalleryP from './components/mainGallery/GalleryP';
 function App() {
  
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path='/logged' element={<Logged />}></Route>
           <Route path='/rooms' element={<Rooms />}></Route>
           <Route path='/services' element={<Services />}></Route>
+          <Route path='/galleryp' element={<GalleryP />}></Route>
           
 
         </Routes>

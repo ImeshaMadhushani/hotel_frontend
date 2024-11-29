@@ -18,7 +18,7 @@ function NavBar() {
                     </a>
 
                      <a href="#gallery" className="text-white hover:text-gray-200 transition duration-200">
-                        <Link to="/gallery">Gallery</Link>
+                        <Link to="/galleryp">Gallery</Link>
                     </a>
 
                     <a href="#contactus" className="text-white hover:text-gray-200 transition duration-200">
