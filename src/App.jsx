@@ -11,7 +11,7 @@ import Rooms from './pages/loggedclient/Rooms/Rooms';
 import AdminPage from './pages/adminpage/adminPage'; // Import the admin page component
 import Services from './components/services/Services';
 import GalleryP from './components/mainGallery/GalleryP';
-import Booking from './pages/loggedclient/booking/booking';
+import Booking from './pages/loggedclient/Booking/Booking';
 function App() {
  
   return (
