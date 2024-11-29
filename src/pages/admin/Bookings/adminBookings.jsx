@@ -5,7 +5,6 @@ import axios from "axios";
 const AdminBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [formData, setFormData] = useState({
-    bookingId: "", // Add bookingId to the form data
     roomId: "",
     start: "",
     end: "",
@@ -28,10 +27,7 @@ const AdminBookings = () => {
       setBookings(response.data.bookings);
       setMessage({ type: "", text: "" });
     } catch (err) {
-      setMessage({
-        type: "error",
-        text: err.response?.data?.message || "Failed to fetch bookings.",
-      });
+      setMessage({ type: "error", text: "Failed to fetch bookings." },err);
     }
   };
 
@@ -47,25 +43,24 @@ const AdminBookings = () => {
     try {
       if (editId) {
         // Update booking
-        await axios.put(`${apiUrl}/${editId}`, formData, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-            "Content-Type": "application/json",
-        });
+        await axios.put(
+          `${apiUrl}/${editId}`,
+          formData,
+          {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          }
+        );
         setMessage({ type: "success", text: "Booking updated successfully!" });
       } else {
         // Create new booking
-        console.log(formData); 
-       await axios.post(apiUrl, formData, {
+        await axios.post(apiUrl, formData, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-       });
-        console.log(localStorage.getItem("token"));  // Check if token is valid
-
+        });
         setMessage({ type: "success", text: "Booking created successfully!" });
       }
 
       // Reset form and refresh bookings
       setFormData({
-        bookingId: "", // Reset bookingId
         roomId: "",
         start: "",
         end: "",
@@ -104,7 +99,6 @@ const AdminBookings = () => {
   // Load booking details for editing
   const handleEdit = (booking) => {
     setFormData({
-      bookingId: booking.bookingId, // Populate bookingId field
       roomId: booking.roomId,
       start: booking.start,
       end: booking.end,
@@ -136,14 +130,6 @@ const AdminBookings = () => {
       {/* Booking Form */}
       <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
-            type="text"
-            name="bookingId"
-            value={formData.bookingId}
-            onChange={handleChange}
-            placeholder="Booking ID"
-            className="input w-full p-3 border rounded-md"
-          />
           <input
             type="number"
             name="roomId"
@@ -203,17 +189,17 @@ const AdminBookings = () => {
       </form>
 
       {/* Booking Table */}
-      <table className="min-w-full mt-8">
-        <thead>
+      <table className="table-auto w-full text-left bg-white border rounded-lg shadow-lg">
+        <thead className="bg-gray-100">
           <tr>
-            <th className="px-6 py-4 text-sm font-medium text-left text-gray-500">Booking ID</th>
-            <th className="px-6 py-4 text-sm font-medium text-left text-gray-500">Room ID</th>
-            <th className="px-6 py-4 text-sm font-medium text-left text-gray-500">Email</th>
-            <th className="px-6 py-4 text-sm font-medium text-left text-gray-500">Start Time</th>
-            <th className="px-6 py-4 text-sm font-medium text-left text-gray-500">End Time</th>
-            <th className="px-6 py-4 text-sm font-medium text-left text-gray-500">Reason</th>
-            <th className="px-6 py-4 text-sm font-medium text-left text-gray-500">Notes</th>
-            <th className="px-6 py-4 text-sm font-medium text-left text-gray-500">Actions</th>
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">Booking ID</th>
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">Room ID</th>
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">Email</th> {/* Add Email column */}
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">Start Time</th>
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">End Time</th>
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">Reason</th>
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">Notes</th>
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -221,13 +207,9 @@ const AdminBookings = () => {
             <tr key={booking.bookingId} className="border-t">
               <td className="px-6 py-4 text-sm text-gray-700">{booking.bookingId}</td>
               <td className="px-6 py-4 text-sm text-gray-700">{booking.roomId}</td>
-              <td className="px-6 py-4 text-sm text-gray-700">{booking.email}</td>
-              <td className="px-6 py-4 text-sm text-gray-700">
-                {new Date(booking.start).toLocaleString()}
-              </td>
-              <td className="px-6 py-4 text-sm text-gray-700">
-                {new Date(booking.end).toLocaleString()}
-              </td>
+              <td className="px-6 py-4 text-sm text-gray-700">{booking.email}</td> {/* Show email */}
+              <td className="px-6 py-4 text-sm text-gray-700">{new Date(booking.start).toLocaleString()}</td>
+              <td className="px-6 py-4 text-sm text-gray-700">{new Date(booking.end).toLocaleString()}</td>
               <td className="px-6 py-4 text-sm text-gray-700">{booking.reason}</td>
               <td className="px-6 py-4 text-sm text-gray-700">{booking.notes}</td>
               <td className="px-6 py-4 text-sm text-gray-700">
@@ -239,7 +221,7 @@ const AdminBookings = () => {
                 </button>
                 <button
                   onClick={() => handleDelete(booking.bookingId)}
-                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 ml-2"
+                  className="ml-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
                 >
                   Delete
                 </button>
