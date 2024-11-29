@@ -1,4 +1,4 @@
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { CiBookmarkCheck } from "react-icons/ci";
 import { MdOutlineCategory } from "react-icons/md";
 import { FaRegWindowMaximize, FaUsers, FaRegComments, FaImages } from "react-icons/fa"; 
@@ -10,15 +10,22 @@ import AdminFeedback from "../admin/Feedback/adminFeedback";
 import AdminGalleryItems from "../admin/GalleryItems/admingalleryItems";
 
 export default function AdminPage() {
+    const navigate = useNavigate(); // Hook to handle navigation after logout
+
     // Retrieve the admin data from localStorage
     const admin = JSON.parse(localStorage.getItem("user"));
 
-    // Debugging to ensure the admin data is being retrieved correctly
-    console.log("Admin Data:", admin); // Check what is being logged
-
     // Default values if no data exists
-    const adminName = admin?.firstName + " " + admin?.lastName || "Admin Name"; // Make sure name exists in admin object
+    const adminName = admin?.firstName + " " + admin?.lastName || "Admin Name"; 
     const adminEmail = admin?.email || "admin@example.com";
+
+    // Logout function
+    const handleLogout = () => {
+        // Remove the admin data from localStorage
+        localStorage.removeItem("user");
+        // Redirect to login page
+        navigate("/login"); 
+    };
 
     return (
         <div className="w-full h-screen flex overflow-hidden bg-gray-100">
@@ -26,8 +33,7 @@ export default function AdminPage() {
             <div className="w-1/5 bg-[#0B192C] text-white flex flex-col py-8 px-6 shadow-lg">
                 {/* Admin Info Section */}
                 <div className="mb-12 text-center">
-                    {/* Display admin name and email */}
-                    <div className="text-lg font-semibold">{adminName}</div> {/* Display name here */}
+                    <div className="text-lg font-semibold">{adminName}</div>
                     <div className="text-sm text-gray-400">{adminEmail}</div>
                 </div>
 
@@ -70,7 +76,16 @@ export default function AdminPage() {
                 {/* Header Section */}
                 <div className="bg-blue-800 text-white p-6 flex items-center justify-between shadow-md">
                     <h1 className="text-xl font-semibold">Admin Dashboard</h1>
-                    <div className="text-sm text-gray-300">{adminName} | {adminEmail}</div> {/* Display name here */}
+                    <div className="flex items-center space-x-4">
+                        <div className="text-sm text-gray-300">{adminName} | {adminEmail}</div>
+                        {/* Logout Button */}
+                        <button 
+                            onClick={handleLogout} 
+                            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-all duration-300"
+                        >
+                            Logout
+                        </button>
+                    </div>
                 </div>
 
                 {/* Routes for the different pages */}
