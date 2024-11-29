@@ -23,8 +23,8 @@ const AdminRooms = () => {
   // Fetch all rooms
   const fetchRooms = async () => {
     try {
-        const response = await axios.get(apiUrl);
-         console.log("Rooms response:", response.data); 
+      const response = await axios.get(apiUrl);
+      console.log("Rooms response:", response.data); 
       setRooms(response.data.result);
       setMessage({ type: "", text: "" });
     } catch (err) {
@@ -120,13 +120,13 @@ const AdminRooms = () => {
   }, []);
 
   return (
-    <div className="p-6 bg-blue-600 text-white min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">Manage Rooms</h1>
+     <div className="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold text-gray-800 text-center mb-8">Manage Rooms</h1>
 
       {/* Display Messages */}
       {message.text && (
         <p
-          className={`p-2 rounded mb-4 ${
+          className={`p-3 rounded mb-4 text-center font-semibold ${
             message.type === "success" ? "bg-green-500" : "bg-red-500"
           }`}
         >
@@ -135,15 +135,15 @@ const AdminRooms = () => {
       )}
 
       {/* Room Form */}
-      <form onSubmit={handleSubmit} className="mb-6">
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
             type="number"
             name="roomId"
             value={formData.roomId}
             onChange={handleChange}
             placeholder="Room ID"
-            className="p-2 rounded text-black"
+            className="p-3 rounded border border-gray-300 text-black focus:ring-2 focus:ring-blue-500"
             required
           />
           <input
@@ -152,7 +152,7 @@ const AdminRooms = () => {
             value={formData.category}
             onChange={handleChange}
             placeholder="Category"
-            className="p-2 rounded text-black"
+            className="p-3 rounded border border-gray-300 text-black focus:ring-2 focus:ring-blue-500"
             required
           />
           <input
@@ -161,7 +161,7 @@ const AdminRooms = () => {
             value={formData.maxGuests}
             onChange={handleChange}
             placeholder="Max Guests"
-            className="p-2 rounded text-black"
+            className="p-3 rounded border border-gray-300 text-black focus:ring-2 focus:ring-blue-500"
             required
           />
           <input
@@ -170,7 +170,7 @@ const AdminRooms = () => {
             value={formData.price}
             onChange={handleChange}
             placeholder="Price"
-            className="p-2 rounded text-black"
+            className="p-3 rounded border border-gray-300 text-black focus:ring-2 focus:ring-blue-500"
             required
           />
           <input
@@ -179,7 +179,7 @@ const AdminRooms = () => {
             value={formData.photos}
             onChange={handleChange}
             placeholder="Photos (comma-separated URLs)"
-            className="p-2 rounded text-black"
+            className="p-3 rounded border border-gray-300 text-black focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="text"
@@ -187,17 +187,17 @@ const AdminRooms = () => {
             value={formData.specialDescription}
             onChange={handleChange}
             placeholder="Special Description"
-            className="p-2 rounded text-black"
+            className="p-3 rounded border border-gray-300 text-black focus:ring-2 focus:ring-blue-500"
           />
           <textarea
             name="notes"
             value={formData.notes}
             onChange={handleChange}
             placeholder="Notes"
-            className="p-2 rounded text-black"
+            className="p-3 rounded border border-gray-300 text-black focus:ring-2 focus:ring-blue-500"
           />
-          <label>
-            Available
+          <label className="flex items-center">
+            <span className="mr-2">Available</span>
             <input
               type="checkbox"
               name="available"
@@ -209,50 +209,52 @@ const AdminRooms = () => {
         </div>
         <button
           type="submit"
-          className="mt-4 px-4 py-2 bg-white text-blue-600 font-bold rounded hover:bg-gray-200"
+          className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none"
         >
           {editId ? "Update Room" : "Add Room"}
         </button>
       </form>
 
       {/* Room Table */}
-      <table className="w-full bg-white text-black rounded overflow-hidden">
-        <thead>
-          <tr className="bg-gray-800 text-white">
-            <th className="p-2">Room ID</th>
-            <th className="p-2">Category</th>
-            <th className="p-2">Max Guests</th>
-            <th className="p-2">Price</th>
-            <th className="p-2">Available</th>
-            <th className="p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rooms.map((room) => (
-            <tr key={room.roomId} className="border-b hover:bg-gray-100">
-              <td className="p-2">{room.roomId}</td>
-              <td className="p-2">{room.category}</td>
-              <td className="p-2">{room.maxGuests}</td>
-              <td className="p-2">{room.price}</td>
-              <td className="p-2">{room.available ? "Yes" : "No"}</td>
-              <td className="p-2 flex gap-2">
-                <button
-                  onClick={() => handleEdit(room)}
-                  className="px-3 py-1 bg-yellow-500 text-white rounded"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(room.roomId)}
-                  className="px-3 py-1 bg-red-500 text-white rounded"
-                >
-                  Delete
-                </button>
-              </td>
+      <div className="overflow-x-auto mt-8 bg-white rounded-lg shadow-md">
+        <table className="table-auto w-full text-left bg-white border rounded-lg shadow-lg">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="px-6 py-3 text-sm font-medium text-gray-600">Room ID</th>
+              <th className="px-6 py-3 text-sm font-medium text-gray-600">Category</th>
+              <th className="px-6 py-3 text-sm font-medium text-gray-600">Max Guests</th>
+              <th className="px-6 py-3 text-sm font-medium text-gray-600">Price</th>
+              <th className="px-6 py-3 text-sm font-medium text-gray-600">Available</th>
+              <th className="px-6 py-3 text-sm font-medium text-gray-600">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rooms.map((room) => (
+              <tr key={room.roomId} className="border-t">
+                <td className="px-6 py-4 text-sm text-gray-700">{room.roomId}</td>
+                <td className="px-6 py-4 text-sm text-gray-700">{room.category}</td>
+                <td className="px-6 py-4 text-sm text-gray-700">{room.maxGuests}</td>
+                <td className="px-6 py-4 text-sm text-gray-700">{room.price}</td>
+                <td className="px-6 py-4 text-sm text-gray-700">{room.available ? "Yes" : "No"}</td>
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  <button
+                    onClick={() => handleEdit(room)}
+                     className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(room.roomId)}
+                     className="ml-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

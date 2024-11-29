@@ -110,8 +110,8 @@ const AdminCategories = () => {
   }, []);
 
   return (
-    <div className="p-6 bg-blue-600 text-white min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">Manage Categories</h1>
+    <div className="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold text-gray-800 text-center mb-8">Manage Categories</h1>
 
       {/* Display Messages */}
       {message.text && (
@@ -125,15 +125,15 @@ const AdminCategories = () => {
       )}
 
       {/* Category Form */}
-      <form onSubmit={handleSubmit} className="mb-6">
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
             placeholder="Category Name"
-            className="p-2 rounded text-black"
+           className="input w-full p-3 border rounded-md"
             required
           />
           <input
@@ -142,7 +142,7 @@ const AdminCategories = () => {
             value={formData.price}
             onChange={handleChange}
             placeholder="Price"
-            className="p-2 rounded text-black"
+            className="input w-full p-3 border rounded-md"
             required
           />
           <input
@@ -151,7 +151,7 @@ const AdminCategories = () => {
             value={formData.features}
             onChange={handleChange}
             placeholder="Features (comma-separated)"
-            className="p-2 rounded text-black"
+           className="input w-full p-3 border rounded-md"
           />
           <textarea
             name="description"
@@ -168,48 +168,48 @@ const AdminCategories = () => {
             value={formData.image}
             onChange={handleChange}
             placeholder="Image URL"
-            className="p-2 rounded text-black"
+           className="input w-full p-3 border rounded-md"
           /></label>
         </div>
         <button
           type="submit"
-          className="mt-4 px-4 py-2 bg-white text-blue-600 font-bold rounded hover:bg-gray-200"
+         className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none"
         >
           {editId ? "Update Category" : "Add Category"}
         </button>
       </form>
 
       {/* Category Table */}
-      <table className="w-full bg-white text-black rounded overflow-hidden">
-        <thead>
-          <tr className="bg-gray-800 text-white">
-            <th className="p-2">Name</th>
-            <th className="p-2">Price</th>
-            <th className="p-2">Description</th>
-            <th className="p-2">Features</th>
-            <th className="p-2">Image</th>
-            <th className="p-2">Actions</th>
+      <table className="table-auto w-full text-left bg-white border rounded-lg shadow-lg">
+        <thead className="bg-gray-100">
+          <tr>
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">Name</th>
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">Price</th>
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">Description</th>
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">Features</th>
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">Image</th>
+            <th className="px-6 py-3 text-sm font-medium text-gray-600">Actions</th>
           </tr>
         </thead>
         <tbody>
           {categories.map((category) => (
-            <tr key={category._id} className="border-b hover:bg-gray-100">
-              <td className="p-2">{category.name}</td>
-              <td className="p-2">{category.price}</td>
-              <td className="p-2">{category.description}</td>
-              <td className="p-2">{category.features.join(", ")}</td>
-               <td className="p-2">{category.image}</td>
+            <tr key={category._id} className="border-t">
+              <td className="px-6 py-4 text-sm text-gray-700">{category.name}</td>
+              <td className="px-6 py-4 text-sm text-gray-700">{category.price}</td>
+              <td className="px-6 py-4 text-sm text-gray-700">{category.description}</td>
+              <td className="px-6 py-4 text-sm text-gray-700">{category.features.join(", ")}</td>
+               <td className="px-6 py-4 text-sm text-gray-700">{category.image}</td>
               
-              <td className="p-2 flex gap-2">
+              <td className="px-6 py-4 text-sm text-gray-700">
                 <button
                   onClick={() => handleEdit(category)}
-                  className="px-3 py-1 bg-yellow-500 text-white rounded"
+                  className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(category.name)}
-                  className="px-3 py-1 bg-red-500 text-white rounded"
+                  className="ml-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
                 >
                   Delete
                 </button>
