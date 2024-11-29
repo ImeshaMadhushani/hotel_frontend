@@ -10,20 +10,20 @@ function NavBar() {
                 
                 {/* Navigation links and user actions */}
                 <div className="flex items-center space-x-4">
-                    <a href="#home" className="text-white hover:text-gray-200 transition duration-200">
-                        <Link to='/home'>Home</Link>
-                    </a>
-                    <a href="#aboutus" className="text-white hover:text-gray-200 transition duration-200">
+                    <p href="#home" className="text-white hover:text-gray-200 transition duration-200">
+                        <Link to='/'>Home</Link>
+                    </p>
+                    <p href="#aboutus" className="text-white hover:text-gray-200 transition duration-200">
                           <Link to='/aboutus'>About</Link>
-                    </a>
+                    </p>
 
-                     <a href="#gallery" className="text-white hover:text-gray-200 transition duration-200">
+                     <p href="#gallery" className="text-white hover:text-gray-200 transition duration-200">
                         <Link to="/galleryp">Gallery</Link>
-                    </a>
+                    </p>
 
-                    <a href="#contactus" className="text-white hover:text-gray-200 transition duration-200">
+                    <p href="#contactus" className="text-white hover:text-gray-200 transition duration-200">
                           <Link to='/contactus'>ContactUs</Link>
-                    </a>
+                    </p>
 
                    {/* Book Now Button */}
                   {/*   <button className="bg-[#3f71b6] hover:bg-white hover:text-[#0B192C] text-white py-2 px-4 rounded-md shadow-md transition duration-200">

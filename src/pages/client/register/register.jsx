@@ -32,7 +32,7 @@ export default function Register() {
             whatsapp,
             password,
             image: "../src/assets/avatar1.png",
-            type: "customer",
+            type: userType,
             disabled: false,
             emailVerified: false
         };

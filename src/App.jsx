@@ -17,15 +17,15 @@ function App() {
   return (
     <>
      <BrowserRouter>
-        <Routes path='/*'>
+        <Routes>
           
-          {/* <Route path='/*' element={<WelcomePage />}></Route> */}
+          {/* <Route path="*" element={<NotFound />} /> */}
+          <Route path='/' element={<Home />}></Route>
           <Route path="/admin/*" element={<AdminPage />} />
           <Route path='/login' element={<Login />}></Route>
           <Route path='/register' element={<Register />}></Route>
           <Route path='/aboutus' element={<AboutUs />}></Route>
           <Route path='/contactus' element={<ContactUs />}></Route> 
-          <Route path='/home' element={<Home />}></Route>
           <Route path='/logged' element={<Logged />}></Route>
           <Route path='/rooms' element={<Rooms />}></Route>
           <Route path='/booking' element={<Booking />}></Route>
