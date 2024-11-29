@@ -73,11 +73,11 @@ const AdminUsers = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-semibold text-gray-800 mb-6">Admin Users</h1>
+      <h1 className="text-2xl font-bold text-gray-800 text-center mb-8">Admin Users</h1>
 
       {/* Add user form */}
       <div className="mb-6 p-4 border rounded-lg shadow-lg bg-white">
-        <h2 className="text-2xl font-medium text-gray-700 mb-4">Add New User</h2>
+        <h2 className="text-xl font-medium text-gray-700 mb-4">Add New User</h2>
         <div className="mb-4">
           <input
             type="text"

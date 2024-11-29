@@ -173,7 +173,7 @@ const AdminCategories = () => {
         </div>
         <button
           type="submit"
-         className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none"
+         className="w-full py-4 text-lg bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none"
         >
           {editId ? "Update Category" : "Add Category"}
         </button>
