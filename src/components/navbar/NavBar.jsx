@@ -10,18 +10,18 @@ function NavBar() {
                 
                 {/* Navigation links and user actions */}
                 <div className="flex items-center space-x-4">
-                    <p className="text-white hover:text-gray-200 transition duration-200">
-                        <Link to='#home'>Home</Link>
-                    </p>
-                    <p className="text-white hover:text-gray-200 transition duration-200">
+                    <a href="#home" className="text-white hover:text-gray-200 transition duration-200">
+                        <Link to='/home'>Home</Link>
+                    </a>
+                    <a href="#aboutus" className="text-white hover:text-gray-200 transition duration-200">
                           <Link to='/aboutus'>About</Link>
-                    </p>
+                    </a>
 
-                     <p className="text-white hover:text-gray-200 transition duration-200">
-                        <Link to="#gallery">Gallery</Link>
-                    </p>
+                     <a href="#gallery" className="text-white hover:text-gray-200 transition duration-200">
+                        <Link to="/gallery">Gallery</Link>
+                    </a>
 
-                    <a href="/contact" className="text-white hover:text-gray-200 transition duration-200">
+                    <a href="#contactus" className="text-white hover:text-gray-200 transition duration-200">
                           <Link to='/contactus'>ContactUs</Link>
                     </a>
 

@@ -13,10 +13,7 @@ const Gallery = () => {
 
     return (
         <div className="bg-gray-100 py-12">
-            <h2 className="text-center text-4xl font-bold mb-8 text-gray-800">
-                Explore Our Gallery
-            </h2>
-            <p className="text-center text-lg text-gray-600 mb-10">
+            <p className="text-center text-2xl  text-gray-600 mb-10">
                 A glimpse into the luxury and elegance we offer.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-6 lg:px-16">

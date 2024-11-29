@@ -1,8 +1,12 @@
 // import heroImage from "/hero1.jpg"; // Uncomment and adjust path if using an image
 import { Link } from 'react-router-dom';
+import NavBar from "../navbar/NavBar";
+import Footer from "../footer/Footer";
 
 export default function AboutUs() {
   return (
+    <>
+      <NavBar/>
     <div className="relative min-h-screen bg-gray-50">
       {/* Hero Section */}
       <div className="relative min-h-[50vh] flex items-center justify-center bg-blue-800 text-white">
@@ -111,6 +115,8 @@ export default function AboutUs() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+      <Footer />
+      </>
   );
 }
