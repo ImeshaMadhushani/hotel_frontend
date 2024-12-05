@@ -16,7 +16,7 @@ function App() {
  
   return (
     <>
-     <BrowserRouter>
+      <BrowserRouter>
         <Routes>
           
           {/* <Route path="*" element={<NotFound />} /> */}
@@ -33,7 +33,7 @@ function App() {
           <Route path='/galleryp' element={<GalleryP />}></Route>
           
 
-        </Routes>
+          </Routes>
       </BrowserRouter> 
     
     </>

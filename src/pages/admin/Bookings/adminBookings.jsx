@@ -27,7 +27,8 @@ const AdminBookings = () => {
       setBookings(response.data.bookings);
       setMessage({ type: "", text: "" });
     } catch (err) {
-      setMessage({ type: "error", text: "Failed to fetch bookings." },err);
+      setMessage({ type: "error", text: "Failed to fetch bookings." });
+      console.error(err);
     }
   };
 
@@ -56,7 +57,7 @@ const AdminBookings = () => {
         await axios.post(apiUrl, formData, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        setMessage({ type: "success", text: "Booking created successfully!" });
+        setMessage({ type: "success", text: `Booking ${editId ? 'updated' : 'created'} successfully!` });
       }
 
       // Reset form and refresh bookings
