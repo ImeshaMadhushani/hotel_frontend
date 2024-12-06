@@ -14,11 +14,15 @@ const AdminBookings = () => {
   const [editId, setEditId] = useState(null);
   const [message, setMessage] = useState({ type: "", text: "" });
   
-  // New state for delete confirmation
+  // New state for pagination and delete confirmation
+  const [currentPage, setCurrentPage] = useState(1);
   const [deleteConfirmation, setDeleteConfirmation] = useState({
     isOpen: false,
     booking: null
   });
+
+  // Items per page
+  const ITEMS_PER_PAGE = 6;
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const apiUrl = `${backendUrl}/api/booking`;
@@ -40,6 +44,17 @@ const AdminBookings = () => {
       });
     } 
   };
+
+  // Pagination calculations
+  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+  const currentBookings = bookings.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(bookings.length / ITEMS_PER_PAGE);
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -89,6 +104,8 @@ const AdminBookings = () => {
       });
       setEditId(null);
       fetchBookings();
+      // Reset to first page after adding/updating
+      setCurrentPage(1);
     } catch (err) {
       console.error("Submit booking error:", err.response?.data || err);
       setMessage({
@@ -135,6 +152,12 @@ const AdminBookings = () => {
       
       // Refresh bookings after deletion
       fetchBookings();
+      
+      // Adjust current page if needed
+      const newTotalPages = Math.ceil((bookings.length - 1) / ITEMS_PER_PAGE);
+      if (currentPage > newTotalPages) {
+        setCurrentPage(newTotalPages);
+      }
     } catch (err) {
       console.error("Delete booking error:", err.response?.data || err);
       setMessage({
@@ -285,7 +308,7 @@ const AdminBookings = () => {
             </tr>
           </thead>
           <tbody>
-            {bookings.map((booking) => (
+            {currentBookings.map((booking) => (
               <tr key={booking._id} className="border-t">
                 <td className="px-6 py-4 text-sm text-gray-700">{booking.bookingId}</td>
                 <td className="px-6 py-4 text-sm text-gray-700">{booking.roomId}</td>
@@ -318,6 +341,29 @@ const AdminBookings = () => {
             ))}
           </tbody>
         </table>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-center items-center space-x-4 mt-4">
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          
+          <span className="text-gray-700">
+            Page {currentPage} of {totalPages}
+          </span>
+          
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
