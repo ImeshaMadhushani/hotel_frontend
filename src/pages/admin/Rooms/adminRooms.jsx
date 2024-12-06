@@ -4,7 +4,7 @@ import axios from "axios";
 
 const AdminRooms = () => {
   const [rooms, setRooms] = useState([]);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({  
     roomId: "",
     category: "",
     maxGuests: "",
