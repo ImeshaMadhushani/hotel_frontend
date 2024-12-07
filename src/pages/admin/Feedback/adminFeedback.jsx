@@ -83,15 +83,18 @@ const AdminFeedback = () => {
     fetchFeedbacks();
   }, []);
 
+  // Sort feedbacks by 'createdAt' (or similar) in descending order
+  const sortedFeedbacks = [...feedbacks].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
   return (
-    <div className="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold text-gray-800 text-center mb-8">Manage Feedback</h1>
+    <div className="container mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <h1 className="text-3xl font-semibold text-gray-800 text-center mb-6">Manage Feedback</h1>
 
       {/* Display Messages */}
       {message.text && (
         <p
-          className={`p-3 rounded mb-4 text-center font-semibold ${
-            message.type === "success" ? "bg-green-500" : "bg-red-500"
+          className={`p-4 rounded-md text-center font-semibold mb-6 ${
+            message.type === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
           }`}
         >
           {message.text}
@@ -99,8 +102,8 @@ const AdminFeedback = () => {
       )}
 
       {/* Feedback Table */}
-      <div className="overflow-x-auto mt-8 bg-white rounded-lg shadow-md">
-        <table className="table-auto w-full text-left bg-white border rounded-lg shadow-lg">
+      <div className="overflow-x-auto mt-6 bg-white rounded-lg shadow-md">
+        <table className="table-auto w-full text-left border-separate border-spacing-0.5">
           <thead className="bg-gray-100">
             <tr>
               <th className="px-6 py-3 text-sm font-medium text-gray-600">First Name</th>
@@ -113,7 +116,7 @@ const AdminFeedback = () => {
             </tr>
           </thead>
           <tbody>
-            {feedbacks.map((feedback) => (
+            {sortedFeedbacks.map((feedback) => (
               <tr key={feedback._id} className="border-t">
                 <td className="px-6 py-4 text-sm text-gray-700">{feedback.user.firstName}</td>
                 <td className="px-6 py-4 text-sm text-gray-700">{feedback.user.lastName}</td>
@@ -123,23 +126,23 @@ const AdminFeedback = () => {
                 <td className="px-6 py-4 text-sm text-gray-700">
                   {feedback.approved ? "Approved" : feedback.approved === false ? "Disapproved" : "Pending"}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-700">
+                <td className="px-6 py-4 text-sm text-gray-700 flex space-x-2">
                   {/* Approve, Disapprove and Delete buttons */}
                   <button
                     onClick={() => handleApproval(feedback._id, true)}
-                    className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 mr-2"
+                    className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-200"
                   >
                     Approve
                   </button>
                   <button
                     onClick={() => handleApproval(feedback._id, false)}
-                    className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 mr-2"
+                    className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-200"
                   >
                     Disapprove
                   </button>
                   <button
                     onClick={() => handleDelete(feedback._id)}
-                    className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                    className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200"
                   >
                     Delete
                   </button>
