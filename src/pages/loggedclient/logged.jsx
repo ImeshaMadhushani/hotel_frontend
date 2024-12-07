@@ -57,19 +57,19 @@ export default function Logged() {
                 </div>
 
                 {/* Display User Feedback */}
-                <div className="flex-1">
+               {/*  <div className="flex-1">
                     <div className="p-6 bg-gray-100 shadow-md rounded-lg animate-slide-right">
                         <h2 className="text-2xl font-bold mb-4">User Feedback</h2>
                         <p className="text-gray-700">
-                            {/* Example feedback items */}
+                           
                             &quot;Amazing experience, will definitely visit again!&quot; - John
                         </p>
                         <p className="text-gray-700 mt-4">
                             &quot;The best villa I have ever stayed in!&quot; - Emily
                         </p>
-                        {/* You can replace this with dynamic user feedback */}
+                        
                     </div>
-                </div>
+                </div>  */}
             </div>
 
             <Footer />
