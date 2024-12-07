@@ -1,64 +1,103 @@
-/* 
-import { createClient } from '@supabase/supabase-js'
+/* // eslint-disable-next-line no-unused-vars
+import React, { useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://qqbpzbxsbttwzfnwqbsh.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxYnB6YnhzYnR0d3pmbndxYnNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI4NTU0NjQsImV4cCI6MjA0ODQzMTQ2NH0.KeRO9HHzZF0tb8i4u1rFk6MtAYwn_RPFwEqQq0G4mfs'
-const supabase = createClient(supabaseUrl, supabaseKey)
+// Use environment variables from .env file
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const ImageUploader = () => {
     const [file, setFile] = useState(null);
     const [error, setError] = useState(null);
-    const [uploading, upsetLoading] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const [imageUrl, setImageUrl] = useState(null);
 
-    const handlefileChange = (e) => {
-        console.log(e.target.files);
-        const selectedFile = e.target.files;
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
         setFile(selectedFile);
         setError(null);
-     }
+    }
 
     const handleUpload = async () => {
         if (!file) {
             setError('Please select a file');
             return;
         }
+
         try {
             setUploading(true);
             setError(null);
 
+            // Generate a unique filename
             const fileExt = file.name.split('.').pop();
             const fileName = `${Math.random()}.${fileExt}`;
             const filePath = `uploads/${fileName}`;
 
-            const { error: uploadError } = await supabase.storage.
-                from('hotel')
-                .upload(filePath, , file, {
+            // Upload the file
+            const { error: uploadError } = await supabase.storage
+                .from('hotel')
+                .upload(filePath, file, {
                     cacheControl: '3600',
                     upsert: false,
                 });
-            
+
             if (uploadError) {
                 throw uploadError;
             }
 
-            const { data: { publicUrl } } = supabase.storage.
-                from('hotel').getPublicUrl(filePath);
-            
+            // Get public URL
+            const { data: { publicUrl } } = supabase.storage
+                .from('hotel')
+                .getPublicUrl(filePath);
+
             console.log('File uploaded successfully:', publicUrl);
+            setImageUrl(publicUrl);
             setFile(null);
 
+            // Reset file input
             const fileInput = document.querySelector('input[type="file"]');
             if (fileInput) fileInput.value = '';
 
-        } catch(err) {
+        } catch (err) {
             console.error('Error uploading:', err);
             setError(err.message || 'Error uploading file');
         } finally {
             setUploading(false);
         }
     }
+
     return (
-        
-    )
+        <div className="image-uploader">
+            <input 
+                type="file" 
+                onChange={handleFileChange} 
+                accept="image/*"
+                disabled={uploading}
+            />
+            <button 
+                onClick={handleUpload} 
+                disabled={!file || uploading}
+            >
+                {uploading ? 'Uploading...' : 'Upload Image'}
+            </button>
+
+            {error && (
+                <p style={{ color: 'red' }}>{error}</p>
+            )}
+
+            {imageUrl && (
+                <div>
+                    <p>Uploaded Image:</p>
+                    <img 
+                        src={imageUrl} 
+                        alt="Uploaded" 
+                        style={{ maxWidth: '300px', marginTop: '10px' }} 
+                    />
+                </div>
+            )}
+        </div>
+    );
 }
+
 export default ImageUploader; */

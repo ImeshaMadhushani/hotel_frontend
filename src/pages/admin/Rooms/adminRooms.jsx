@@ -8,12 +8,13 @@ const AdminRooms = () => {
     roomId: "",
     category: "",
     maxGuests: "",
-    available: true,
-    photos: "",
+    available: true, // Default to true
+    photos: [], 
     specialDescription: "",
     notes: "",
     price: "",
   });
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [editId, setEditId] = useState(null);
   const [message, setMessage] = useState({ type: "", text: "" });
 
@@ -25,33 +26,88 @@ const AdminRooms = () => {
     try {
       const response = await axios.get(apiUrl);
       console.log("Rooms response:", response.data); 
-      setRooms(response.data.result);
+      
+      // Ensure available is a boolean
+      const processedRooms = response.data.result.map(room => ({
+        ...room,
+        available: room.available === true || room.available === "true"
+      }));
+      
+      setRooms(processedRooms);
       setMessage({ type: "", text: "" });
     } catch (err) {
-      setMessage({ type: "error", text: "Failed to fetch rooms." },err);
+      console.error("Fetch rooms error:", err);
+      setMessage({ type: "error", text: "Failed to fetch rooms." });
     }
   };
 
   // Handle form input changes
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    
+    // Handle different input types
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
+  // Handle file selection
   const handleFileChange = (e) => {
-  setFormData({ ...formData, photos: e.target.files[0] });
-};
+    const files = Array.from(e.target.files);
+    setSelectedFiles(files);
+  };
 
+  // Upload images to server
+  const uploadImages = async () => {
+    if (selectedFiles.length === 0) return [];
+
+    const imageUploadPromises = selectedFiles.map(async (file) => {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        const response = await axios.post(`${backendUrl}/api/upload`, formData, {
+          headers: { 
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${localStorage.getItem("token")}` 
+          }
+        });
+
+        return response.data.imageUrl;
+      } catch (error) {
+        console.error('Image upload error:', error);
+        setMessage({ 
+          type: "error", 
+          text: `Failed to upload image: ${file.name}` 
+        });
+        return null;
+      }
+    });
+
+    return await Promise.all(imageUploadPromises);
+  };
 
   // Submit form for creating or updating room
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      // Upload images first
+      const uploadedImageUrls = await uploadImages();
+
+      // Prepare room data
+      const roomData = {
+        ...formData,
+        available: !!formData.available, // Ensure boolean
+        photos: uploadedImageUrls.filter(url => url !== null)
+      };
+
       if (editId) {
         // Update room
         await axios.put(
           `${apiUrl}/${editId}`,
-          formData,
+          roomData,
           {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           }
@@ -59,7 +115,7 @@ const AdminRooms = () => {
         setMessage({ type: "success", text: "Room updated successfully!" });
       } else {
         // Create new room
-        await axios.post(apiUrl, formData, {
+        await axios.post(apiUrl, roomData, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setMessage({ type: "success", text: "Room created successfully!" });
@@ -71,14 +127,16 @@ const AdminRooms = () => {
         category: "",
         maxGuests: "",
         available: true,
-        photos: "",
+        photos: [],
         specialDescription: "",
         notes: "",
         price: "",
       });
+      setSelectedFiles([]);
       setEditId(null);
       fetchRooms();
     } catch (err) {
+      console.error("Submit error:", err);
       setMessage({
         type: "error",
         text: err.response?.data?.message || "Failed to save room.",
@@ -110,8 +168,8 @@ const AdminRooms = () => {
       roomId: room.roomId,
       category: room.category,
       maxGuests: room.maxGuests,
-      available: room.available,
-      photos: room.photos.join(", "), // Assuming photos are an array of URLs
+      available: room.available, // Ensure it's a boolean
+      photos: room.photos,
       specialDescription: room.specialDescription,
       notes: room.notes,
       price: room.price,
@@ -125,14 +183,14 @@ const AdminRooms = () => {
   }, []);
 
   return (
-     <div className="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
+    <div className="container mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold text-gray-800 text-center mb-8">Manage Rooms</h1>
 
       {/* Display Messages */}
       {message.text && (
         <p
           className={`p-3 rounded mb-4 text-center font-semibold ${
-            message.type === "success" ? "bg-green-500" : "bg-red-500"
+            message.type === "success" ? "bg-green-500 text-white" : "bg-red-500 text-white"
           }`}
         >
           {message.text}
@@ -180,10 +238,10 @@ const AdminRooms = () => {
           />
           <input
             type="file"
+            multiple
             name="photos"
-            value={formData.photos}
             onChange={handleFileChange}
-            placeholder="Photos (comma-separated URLs)"
+            accept="image/*"
             className="p-3 rounded border border-gray-300 text-black focus:ring-2 focus:ring-blue-500"
           />
           <input
@@ -207,7 +265,7 @@ const AdminRooms = () => {
               type="checkbox"
               name="available"
               checked={formData.available}
-              onChange={() => setFormData({ ...formData, available: !formData.available })}
+              onChange={handleChange}
               className="ml-2"
             />
           </label>
@@ -240,17 +298,24 @@ const AdminRooms = () => {
                 <td className="px-6 py-4 text-sm text-gray-700">{room.category}</td>
                 <td className="px-6 py-4 text-sm text-gray-700">{room.maxGuests}</td>
                 <td className="px-6 py-4 text-sm text-gray-700">{room.price}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{room.available ? "Yes" : "No"}</td>
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  <span className={`
+                    px-3 py-1 rounded-full text-xs font-bold
+                    ${room.available ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}
+                  `}>
+                    {room.available ? "Available" : "Not Available"}
+                  </span>
+                </td>
                 <td className="px-6 py-4 text-sm text-gray-700">
                   <button
                     onClick={() => handleEdit(room)}
-                     className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
+                    className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(room.roomId)}
-                     className="ml-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                    className="ml-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
                   >
                     Delete
                   </button>
