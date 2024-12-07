@@ -2,21 +2,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; 
 import NavBarLogged from "../../components/navbarLogged/NavBarLogged";
-import Slider from "../../components/sliderImage/Slider"; // Assuming you create a Slider component
+import Slider from "../../components/sliderImage/Slider";
 import Footer from '../../components/footer/footer';
-
+import Feedback from '../../components/feedback/Feedback';
+import './logged.css'
 export default function Logged() {
     // Retrieve the user data from localStorage
     const user = JSON.parse(localStorage.getItem("user"));
-   /*  const navigate = useNavigate();
-
-    const bookNow = () => {
-        navigate("/rooms"); // Adjust the path as needed
-    }; */
 
     return (
         <>
-        <div className="min-h-screen  bg-gray-50">
+        <div className="min-h-screen bg-gray-50">
             <NavBarLogged user={user} />
 
             {/* Hero Section */}
@@ -33,24 +29,51 @@ export default function Logged() {
                     </p>
                 </div>
 
-                {/* Slider Component Positioned Below Welcome Message */}
+                {/* Slider Component */}
                 <div className="z-10 w-full mt-6">
                     <Slider className="w-full h-1/2" />
                 </div>
 
-                {/* Call to Action - Positioned Slightly Above Bottom */}
+                {/* Call to Action */}
                 <div className="z-10 mt-4">
                     <button 
                         className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-200 shadow-lg transform hover:scale-105"
-                       
-                    ><Link to='/rooms'>
-                        Book Now</Link>
+                    >
+                        <Link to='/rooms'>
+                            Book Now
+                        </Link>
                     </button>
                 </div>
             </div>
-       
+
+            {/* Feedback Section */}
+            <div className="flex flex-col lg:flex-row bg-white py-10 px-6 lg:px-20 space-y-10 lg:space-y-0 lg:space-x-10">
+                {/* Feedback Form */}
+                <div className="flex-1">
+                    <div className="p-6 bg-gray-100 shadow-md rounded-lg animate-slide-left">
+                        <h2 className="text-2xl font-bold mb-4">Submit Your Feedback</h2>
+                         <Feedback /> 
+                    </div>
+                </div>
+
+                {/* Display User Feedback */}
+                <div className="flex-1">
+                    <div className="p-6 bg-gray-100 shadow-md rounded-lg animate-slide-right">
+                        <h2 className="text-2xl font-bold mb-4">User Feedback</h2>
+                        <p className="text-gray-700">
+                            {/* Example feedback items */}
+                            &quot;Amazing experience, will definitely visit again!&quot; - John
+                        </p>
+                        <p className="text-gray-700 mt-4">
+                            &quot;The best villa I have ever stayed in!&quot; - Emily
+                        </p>
+                        {/* You can replace this with dynamic user feedback */}
+                    </div>
+                </div>
             </div>
+
             <Footer />
-            </>
+        </div>
+        </>
     );
 }
