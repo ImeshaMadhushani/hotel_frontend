@@ -58,7 +58,7 @@ const AdminFeedback = () => {
   // Delete feedback
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${apiUrl}/delete/${id}`, {
+      await axios.delete(`${apiUrl}/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
